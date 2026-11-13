@@ -1,0 +1,1339 @@
+{
+  "meta": {
+    "lastUpdated": "2026-11-11",
+    "region": "US",
+    "currency": "USD",
+    "note": "Prices are standard monthly US rates. Annual plan discounts are not shown. 'adSupported', 'standard' and 'premium' are the three tiers the chart compares: the main ad-supported plan, the main ad-free plan, and the top-tier plan where one exists. Live TV services always carry ads on their live channels, so for them 'standard' is the base plan unless an 'adSupported' key is present. Other keys are additional plans, described by their labels. Source citations for every price are shown on the website.",
+    "source": "https://streamingpricetracker.com/data/prices.json",
+    "website": "https://streamingpricetracker.com/",
+    "license": "https://creativecommons.org/licenses/by/4.0/",
+    "attribution": "Streaming Price Tracker (streamingpricetracker.com)",
+    "citations": "Source citations for every price are shown on the website: https://streamingpricetracker.com/history/"
+  },
+  "services": {
+    "netflix": {
+      "name": "Netflix",
+      "color": "#D6293F",
+      "url": "https://netflix.com",
+      "plans": {
+        "adSupported": {
+          "label": "Standard with Ads",
+          "history": [
+            {
+              "date": "2022-11-03",
+              "price": 6.99
+            },
+            {
+              "date": "2025-01-21",
+              "price": 7.99
+            },
+            {
+              "date": "2026-03-26",
+              "price": 8.99
+            }
+          ]
+        },
+        "basic": {
+          "discontinued": true,
+          "label": "Basic (discontinued)",
+          "history": [
+            {
+              "date": "2014-05-09",
+              "price": 7.99
+            },
+            {
+              "date": "2019-01-15",
+              "price": 8.99
+            },
+            {
+              "date": "2022-01-14",
+              "price": 9.99
+            },
+            {
+              "date": "2023-10-18",
+              "price": 11.99,
+              "notes": [
+                "This plan was phased out for new subscribers on July 19, 2023.",
+                "Netflix ended this plan for all remaining subscribers on July 18, 2024."
+              ]
+            }
+          ]
+        },
+        "standard": {
+          "label": "Standard",
+          "history": [
+            {
+              "date": "2010-11-22",
+              "price": 7.99
+            },
+            {
+              "date": "2014-05-09",
+              "price": 8.99
+            },
+            {
+              "date": "2015-11-11",
+              "price": 9.99
+            },
+            {
+              "date": "2017-10-05",
+              "price": 10.99
+            },
+            {
+              "date": "2019-01-15",
+              "price": 12.99
+            },
+            {
+              "date": "2020-10-29",
+              "price": 13.99
+            },
+            {
+              "date": "2022-01-14",
+              "price": 15.49
+            },
+            {
+              "date": "2025-01-21",
+              "price": 17.99
+            },
+            {
+              "date": "2026-03-26",
+              "price": 19.99
+            }
+          ]
+        },
+        "premium": {
+          "label": "Premium",
+          "history": [
+            {
+              "date": "2013-04-22",
+              "price": 11.99
+            },
+            {
+              "date": "2017-10-05",
+              "price": 13.99
+            },
+            {
+              "date": "2019-01-15",
+              "price": 15.99
+            },
+            {
+              "date": "2020-10-29",
+              "price": 17.99
+            },
+            {
+              "date": "2022-01-14",
+              "price": 19.99
+            },
+            {
+              "date": "2023-10-18",
+              "price": 22.99
+            },
+            {
+              "date": "2025-01-21",
+              "price": 24.99
+            },
+            {
+              "date": "2026-03-26",
+              "price": 26.99
+            }
+          ]
+        }
+      },
+      "upcoming": [],
+      "notes": "Netflix Basic (1-stream, SD) was phased out for new subscribers in July 2023 and fully discontinued in July 2024. The Standard with Ads plan launched November 2022."
+    },
+    "disney": {
+      "name": "Disney+",
+      "color": "#1A4DD6",
+      "url": "https://disneyplus.com",
+      "plans": {
+        "adSupported": {
+          "label": "Basic (with ads)",
+          "history": [
+            {
+              "date": "2022-12-08",
+              "price": 7.99
+            },
+            {
+              "date": "2024-10-17",
+              "price": 9.99
+            },
+            {
+              "date": "2025-10-21",
+              "price": 11.99
+            },
+            {
+              "date": "2026-09-23",
+              "price": 12.49
+            }
+          ]
+        },
+        "standard": {
+          "label": "Premium (no ads)",
+          "history": [
+            {
+              "date": "2019-11-12",
+              "price": 6.99
+            },
+            {
+              "date": "2021-03-26",
+              "price": 7.99
+            },
+            {
+              "date": "2022-12-08",
+              "price": 10.99
+            },
+            {
+              "date": "2023-10-12",
+              "price": 13.99
+            },
+            {
+              "date": "2024-10-17",
+              "price": 15.99
+            },
+            {
+              "date": "2025-10-21",
+              "price": 18.99
+            },
+            {
+              "date": "2026-09-23",
+              "price": 21.49
+            }
+          ]
+        }
+      },
+      "upcoming": [
+        {
+          "description": "Disney is folding Hulu's content into Disney+ under a plan called 'Project Gemini,' expected to be completed by the end of 2026. The standalone Hulu app would then be decommissioned, though Disney says there are 'no current plans to sunset' it.",
+          "expectedDate": "2026-12-31",
+          "structural": true
+        }
+      ],
+      "notes": "Ads tier introduced December 2022. Disney plans to fully integrate Hulu into Disney+ by end of 2026 under 'Project Gemini.'"
+    },
+    "hulu": {
+      "name": "Hulu",
+      "color": "#17D97A",
+      "url": "https://hulu.com",
+      "plans": {
+        "adSupported": {
+          "label": "With Ads",
+          "history": [
+            {
+              "date": "2010-06-29",
+              "price": 9.99,
+              "notes": [
+                "Hulu officially launched on March 12, 2008 as a free, ad-supported service.",
+                "The free tier remained available until it was shut down in 2016."
+              ]
+            },
+            {
+              "date": "2010-11-17",
+              "price": 7.99
+            },
+            {
+              "date": "2019-02-26",
+              "price": 5.99
+            },
+            {
+              "date": "2021-10-08",
+              "price": 6.99
+            },
+            {
+              "date": "2022-10-10",
+              "price": 7.99
+            },
+            {
+              "date": "2024-10-17",
+              "price": 9.99
+            },
+            {
+              "date": "2025-10-21",
+              "price": 11.99
+            },
+            {
+              "date": "2026-09-23",
+              "price": 12.49
+            }
+          ]
+        },
+        "standard": {
+          "label": "No Ads",
+          "history": [
+            {
+              "date": "2015-09-02",
+              "price": 11.99
+            },
+            {
+              "date": "2021-10-08",
+              "price": 12.99
+            },
+            {
+              "date": "2022-10-10",
+              "price": 14.99
+            },
+            {
+              "date": "2023-10-12",
+              "price": 17.99
+            },
+            {
+              "date": "2024-10-17",
+              "price": 18.99
+            },
+            {
+              "date": "2026-09-23",
+              "price": 21.49
+            }
+          ]
+        }
+      },
+      "upcoming": [
+        {
+          "description": "Disney is winding down the standalone Hulu app and migrating its content into Disney+ under a plan called 'Project Gemini,' targeted for the end of 2026. The app would be decommissioned once users transition, though Disney says there are 'no current plans to sunset' it.",
+          "expectedDate": "2026-12-31",
+          "structural": true
+        }
+      ],
+      "notes": "Disney agreed to buy out NBCUniversal's remaining stake in Hulu in 2023 and completed full ownership in July 2025. According to Disney, 'There are no current plans to sunset the Hulu app,' but Hulu content is planned to be fully integrated into Disney+ by end of 2026 under 'Project Gemini.'"
+    },
+    "espn": {
+      "name": "ESPN",
+      "color": "#C4421F",
+      "url": "https://www.espn.com",
+      "plans": {
+        "adSupported": {
+          "label": "Select (formerly ESPN+)",
+          "history": [
+            {
+              "date": "2018-04-12",
+              "price": 4.99
+            },
+            {
+              "date": "2020-08-12",
+              "price": 5.99
+            },
+            {
+              "date": "2021-08-13",
+              "price": 6.99
+            },
+            {
+              "date": "2022-08-23",
+              "price": 9.99
+            },
+            {
+              "date": "2023-10-12",
+              "price": 10.99
+            },
+            {
+              "date": "2024-10-17",
+              "price": 11.99
+            },
+            {
+              "date": "2025-10-21",
+              "price": 12.99,
+              "notes": [
+                "ESPN+ was renamed ESPN Select on August 21, 2025, the day ESPN Unlimited launched. This was the plan's first price change under the new name."
+              ]
+            },
+            {
+              "date": "2026-09-17",
+              "price": 13.99
+            }
+          ]
+        },
+        "unlimited": {
+          "label": "Unlimited",
+          "history": [
+            {
+              "date": "2025-08-21",
+              "price": 29.99
+            },
+            {
+              "date": "2026-09-17",
+              "price": 31.99
+            }
+          ]
+        }
+      },
+      "upcoming": [],
+      "notes": "ESPN's own streaming service, sold in two tiers. ESPN Select is the plan formerly called ESPN+ (renamed in August 2025) and carries ESPN's streaming-only events and on-demand library. ESPN Unlimited, launched in August 2025, adds live streams of ESPN's TV networks, so it works without a cable or live TV subscription. Both plans include ads. Disney also sells ESPN in bundles with Disney+ and Hulu at a combined price, which is not tracked here."
+    },
+    "hbomax": {
+      "name": "HBO Max",
+      "color": "#5822B4",
+      "url": "https://hbomax.com",
+      "plans": {
+        "adSupported": {
+          "label": "Basic With Ads",
+          "history": [
+            {
+              "date": "2021-06-02",
+              "price": 9.99
+            },
+            {
+              "date": "2025-10-21",
+              "price": 10.99
+            }
+          ]
+        },
+        "standard": {
+          "label": "Standard",
+          "history": [
+            {
+              "date": "2015-04-07",
+              "price": 14.99,
+              "notes": [
+                "This was the launch price of HBO Now, the predecessor service. HBO Max launched on May 27, 2020 at the same price of $14.99."
+              ]
+            },
+            {
+              "date": "2023-01-12",
+              "price": 15.99
+            },
+            {
+              "date": "2024-06-04",
+              "price": 16.99
+            },
+            {
+              "date": "2025-10-21",
+              "price": 18.49
+            }
+          ]
+        },
+        "premium": {
+          "label": "Premium",
+          "history": [
+            {
+              "date": "2023-05-23",
+              "price": 19.99
+            },
+            {
+              "date": "2024-06-04",
+              "price": 20.99
+            },
+            {
+              "date": "2025-10-21",
+              "price": 22.99
+            }
+          ]
+        }
+      },
+      "upcoming": [
+        {
+          "description": "Skydance, which now owns both services, said it will start selling HBO Max and Paramount+ together in a streaming bundle early in 2027. The two will keep running as separate services for now, and Skydance plans to merge them into a single service later.",
+          "structural": true
+        }
+      ],
+      "notes": "Launched as HBO Now in April 2015. Rebranded to HBO Max in May 2020. Rebranded to 'Max' in May 2023 to reflect expanded Warner Bros. Discovery content. Rebranded back to HBO Max in Summer 2025. Ad-supported tier launched June 2021. Paramount Skydance completed its $110 billion acquisition of Warner Bros. Discovery on October 6, 2026, creating a combined company called Skydance, which plans to merge HBO Max and Paramount+ into a single streaming service. Skydance CEO David Ellison said that in the short term the two services will be operated separately and bundled together before they are combined. Pricing for the combined service has not been announced."
+    },
+    "appletv": {
+      "name": "Apple TV",
+      "color": "#555555",
+      "url": "https://tv.apple.com",
+      "plans": {
+        "standard": {
+          "label": "Monthly",
+          "history": [
+            {
+              "date": "2019-11-01",
+              "price": 4.99
+            },
+            {
+              "date": "2022-10-24",
+              "price": 6.99
+            },
+            {
+              "date": "2023-10-25",
+              "price": 9.99
+            },
+            {
+              "date": "2025-08-21",
+              "price": 12.99
+            },
+            {
+              "date": "2026-08-28",
+              "price": 14.99
+            }
+          ]
+        }
+      },
+      "upcoming": [],
+      "notes": "Rebranded from 'Apple TV+' to simply 'Apple TV' in October 2025. No ad-supported tier and no free tier; available only as a paid subscription or bundled with Apple One."
+    },
+    "peacock": {
+      "name": "Peacock",
+      "color": "#E8A61B",
+      "url": "https://peacocktv.com",
+      "plans": {
+        "adSupported": {
+          "label": "Premium (with ads)",
+          "history": [
+            {
+              "date": "2020-07-15",
+              "price": 4.99,
+              "notes": [
+                "An ad-supported free tier with limited content also launched on this date."
+              ]
+            },
+            {
+              "date": "2023-07-17",
+              "price": 5.99
+            },
+            {
+              "date": "2024-07-18",
+              "price": 7.99
+            },
+            {
+              "date": "2025-07-23",
+              "price": 10.99
+            },
+            {
+              "date": "2026-08-18",
+              "price": 12.99
+            }
+          ]
+        },
+        "standard": {
+          "label": "Premium Plus (no ads)",
+          "history": [
+            {
+              "date": "2020-07-15",
+              "price": 9.99
+            },
+            {
+              "date": "2023-07-17",
+              "price": 11.99
+            },
+            {
+              "date": "2024-07-18",
+              "price": 13.99
+            },
+            {
+              "date": "2025-07-23",
+              "price": 16.99
+            },
+            {
+              "date": "2026-08-18",
+              "price": 19.99
+            }
+          ]
+        },
+        "select": {
+          "label": "Select (with ads, limited content)",
+          "history": [
+            {
+              "date": "2025-07-23",
+              "price": 7.99
+            },
+            {
+              "date": "2026-08-18",
+              "price": 8.99
+            }
+          ]
+        }
+      },
+      "upcoming": [],
+      "notes": "The free ad-supported tier closed to new subscribers in 2023. Peacock Select launched in July 2025 as a lower-cost tier with limited content."
+    },
+    "paramount": {
+      "name": "Paramount+",
+      "color": "#1A72E8",
+      "url": "https://paramountplus.com",
+      "plans": {
+        "adSupported": {
+          "label": "Essential (with ads)",
+          "history": [
+            {
+              "date": "2021-06-07",
+              "price": 4.99
+            },
+            {
+              "date": "2023-06-27",
+              "price": 5.99
+            },
+            {
+              "date": "2024-08-20",
+              "price": 7.99
+            },
+            {
+              "date": "2026-01-15",
+              "price": 8.99
+            }
+          ]
+        },
+        "standard": {
+          "label": "Premium",
+          "history": [
+            {
+              "date": "2021-03-04",
+              "price": 9.99
+            },
+            {
+              "date": "2023-06-27",
+              "price": 11.99,
+              "notes": [
+                "Showtime content was bundled into the Premium tier at this price change."
+              ]
+            },
+            {
+              "date": "2024-08-20",
+              "price": 12.99
+            },
+            {
+              "date": "2026-01-15",
+              "price": 13.99
+            }
+          ]
+        }
+      },
+      "upcoming": [
+        {
+          "description": "Skydance, which now owns both services, said it will start selling HBO Max and Paramount+ together in a streaming bundle early in 2027. The two will keep running as separate services for now, and Skydance plans to merge them into a single service later.",
+          "structural": true
+        }
+      ],
+      "notes": "Launched as CBS All Access in 2014, rebranded to Paramount+ in March 2021. The Essential (ad-supported) tier launched June 7, 2021, three months after the Premium tier. Showtime content was bundled into the Premium tier in June 2023. Paramount Skydance completed its $110 billion acquisition of Warner Bros. Discovery on October 6, 2026, creating a combined company called Skydance, which plans to merge HBO Max and Paramount+ into a single streaming service. Skydance CEO David Ellison said that in the short term the two services will be operated separately and bundled together before they are combined. Pricing for the combined service has not been announced."
+    },
+    "primevideo": {
+      "name": "Prime Video",
+      "color": "#0099CC",
+      "url": "https://primevideo.com",
+      "plans": {
+        "adSupported": {
+          "label": "Standalone (with ads)",
+          "history": [
+            {
+              "date": "2024-01-29",
+              "price": 8.99,
+              "notes": [
+                "Ads were introduced on this date at no price change to the standalone plan. An additional monthly fee is now required to remove ads."
+              ]
+            }
+          ]
+        },
+        "adFreeAddon": {
+          "label": "Prime Video Ultra (ad-free add-on)",
+          "addon": true,
+          "history": [
+            {
+              "date": "2024-01-29",
+              "price": 2.99
+            },
+            {
+              "date": "2026-04-10",
+              "price": 4.99
+            }
+          ]
+        },
+        "standard": {
+          "label": "Standalone (ad-free)",
+          "history": [
+            {
+              "date": "2016-04-18",
+              "price": 8.99
+            },
+            {
+              "date": "2024-01-29",
+              "price": 11.98,
+              "notes": [
+                "$11.98 = $8.99 standalone + $2.99 ad-free add-on. The standalone plan price did not change; this reflects the total cost to maintain an ad-free standalone subscription."
+              ]
+            },
+            {
+              "date": "2026-04-10",
+              "price": 13.98,
+              "notes": [
+                "$13.98 = $8.99 standalone + $4.99 Prime Video Ultra ad-free add-on (renamed from 'Ad-Free Add-On' in April 2026)."
+              ]
+            }
+          ]
+        }
+      },
+      "upcoming": [],
+      "notes": "Prime Video is included with an Amazon Prime membership ($14.99/mo or $139/yr). A standalone subscription ($8.99/mo) is also available without Prime. Ads were introduced in January 2024 at no price change; an additional monthly fee is required to remove them."
+    },
+    "youtubetv": {
+      "name": "YouTube TV",
+      "color": "#E5332A",
+      "url": "https://tv.youtube.com",
+      "category": "liveTv",
+      "plans": {
+        "standard": {
+          "label": "Base Plan",
+          "history": [
+            {
+              "date": "2017-04-05",
+              "price": 35
+            },
+            {
+              "date": "2018-03-13",
+              "price": 40
+            },
+            {
+              "date": "2019-05-13",
+              "price": 49.99
+            },
+            {
+              "date": "2020-06-30",
+              "price": 64.99
+            },
+            {
+              "date": "2023-04-18",
+              "price": 72.99
+            },
+            {
+              "date": "2024-12-12",
+              "price": 82.99
+            }
+          ]
+        },
+        "fourKPlus": {
+          "label": "Base Plan with 4K Plus",
+          "addon": true,
+          "history": [
+            {
+              "date": "2021-06-28",
+              "price": 84.98,
+              "notes": [
+                "$64.99 base plan + $19.99 for the 4K Plus add-on."
+              ]
+            },
+            {
+              "date": "2023-04-18",
+              "price": 82.98,
+              "notes": [
+                "$72.99 base plan + $9.99 for the 4K Plus add-on."
+              ]
+            },
+            {
+              "date": "2024-12-12",
+              "price": 92.98,
+              "notes": [
+                "$82.99 base plan + $9.99 for the 4K Plus add-on."
+              ]
+            }
+          ]
+        }
+      },
+      "referencePlans": [
+        {
+          "label": "Entertainment",
+          "price": 54.99,
+          "date": "2026-03-12"
+        },
+        {
+          "label": "Entertainment + Family",
+          "price": 62.99,
+          "date": "2026-03-12"
+        },
+        {
+          "label": "News + Family",
+          "price": 62.99,
+          "date": "2026-03-12"
+        },
+        {
+          "label": "News + Entertainment",
+          "price": 62.99,
+          "date": "2026-03-12"
+        },
+        {
+          "label": "Sports",
+          "price": 64.99,
+          "date": "2026-03-12"
+        },
+        {
+          "label": "News + Entertainment + Family",
+          "price": 69.99,
+          "date": "2026-03-12"
+        },
+        {
+          "label": "Sports + Entertainment",
+          "price": 71.99,
+          "date": "2026-03-12"
+        },
+        {
+          "label": "Sports + Family",
+          "price": 71.99,
+          "date": "2026-03-12"
+        },
+        {
+          "label": "Sports + News",
+          "price": 71.99,
+          "date": "2026-03-12"
+        },
+        {
+          "label": "Sports + Entertainment + Family",
+          "price": 77.99,
+          "date": "2026-03-12"
+        },
+        {
+          "label": "Sports + News + Entertainment",
+          "price": 77.99,
+          "date": "2026-03-12"
+        },
+        {
+          "label": "Sports + News + Family",
+          "price": 77.99,
+          "date": "2026-03-12"
+        }
+      ],
+      "upcoming": [],
+      "notes": "Live TV (always ad-supported; there is no ad-free option). Base Plan only is charted. In February 2026 YouTube TV began adding cheaper genre 'Plans', expanding to 12 of them ($54.99–$77.99) by March 2026; these are listed below as a current snapshot rather than charted. Price history reflects the base plan's standard monthly rate."
+    },
+    "hululivetv": {
+      "name": "Hulu + Live TV",
+      "color": "#0FA968",
+      "url": "https://www.hulu.com/live-tv",
+      "category": "liveTv",
+      "plans": {
+        "adSupported": {
+          "label": "With Ads",
+          "history": [
+            {
+              "date": "2017-05-03",
+              "price": 39.99
+            },
+            {
+              "date": "2019-02-26",
+              "price": 44.99
+            },
+            {
+              "date": "2019-12-18",
+              "price": 54.99
+            },
+            {
+              "date": "2020-12-18",
+              "price": 64.99
+            },
+            {
+              "date": "2021-12-21",
+              "price": 69.99,
+              "notes": [
+                "Disney+ and ESPN+ were added to the Hulu + Live TV bundle at this price change."
+              ]
+            },
+            {
+              "date": "2022-12-08",
+              "price": 74.99
+            },
+            {
+              "date": "2023-10-12",
+              "price": 76.99
+            },
+            {
+              "date": "2024-10-17",
+              "price": 82.99
+            },
+            {
+              "date": "2025-10-21",
+              "price": 89.99
+            },
+            {
+              "date": "2026-09-23",
+              "price": 99.99
+            }
+          ]
+        },
+        "standard": {
+          "label": "No Ads",
+          "history": [
+            {
+              "date": "2017-05-03",
+              "price": 43.99
+            },
+            {
+              "date": "2019-02-26",
+              "price": 50.99
+            },
+            {
+              "date": "2019-12-18",
+              "price": 60.99
+            },
+            {
+              "date": "2020-12-18",
+              "price": 70.99
+            },
+            {
+              "date": "2021-12-21",
+              "price": 75.99,
+              "notes": [
+                "Disney+ and ESPN+ were added to the Hulu + Live TV bundle at this price change."
+              ]
+            },
+            {
+              "date": "2022-12-08",
+              "price": 82.99
+            },
+            {
+              "date": "2023-10-12",
+              "price": 89.99
+            },
+            {
+              "date": "2024-10-17",
+              "price": 95.99
+            },
+            {
+              "date": "2025-10-21",
+              "price": 99.99
+            },
+            {
+              "date": "2026-09-23",
+              "price": 109.99
+            }
+          ]
+        },
+        "liveTvOnly": {
+          "label": "Live TV (only)",
+          "history": [
+            {
+              "date": "2017-05-03",
+              "price": 38.99
+            },
+            {
+              "date": "2019-02-26",
+              "price": 43.99,
+              "notes": [
+                "Effective date assumed from the price increases of the other Hulu + Live TV plans."
+              ]
+            },
+            {
+              "date": "2019-12-18",
+              "price": 53.99,
+              "notes": [
+                "Effective date assumed from the price increases of the other Hulu + Live TV plans."
+              ]
+            },
+            {
+              "date": "2020-12-18",
+              "price": 63.99
+            },
+            {
+              "date": "2021-12-21",
+              "price": 68.99,
+              "notes": [
+                "Effective date verified with only one source."
+              ]
+            },
+            {
+              "date": "2023-10-12",
+              "price": 75.99,
+              "notes": [
+                "Effective date verified with only one source."
+              ]
+            },
+            {
+              "date": "2024-10-17",
+              "price": 81.99
+            },
+            {
+              "date": "2025-10-21",
+              "price": 88.99
+            },
+            {
+              "date": "2026-09-23",
+              "price": 98.99,
+              "notes": [
+                "Price increased by $10 alongside the other Hulu + Live TV plans, but this plan isn't specifically listed in these sources."
+              ]
+            }
+          ]
+        }
+      },
+      "upcoming": [],
+      "notes": "Hulu's live TV bundle and a cable alternative. The live channels always include ads; the No Ads tier only removes ads from Hulu's on-demand library. Since December 2021 the bundle has also included Disney+ and ESPN Select (formerly ESPN+). In October 2025, Hulu + Live TV and Fubo completed a corporate combination (Disney owns about 70% of Fubo), creating the sixth-largest US pay TV company; the two continue operating as separate consumer brands with separate pricing."
+    },
+    "sling": {
+      "name": "Sling TV",
+      "color": "#2D7FF9",
+      "url": "https://www.sling.com",
+      "category": "liveTv",
+      "plans": {
+        "standard": {
+          "label": "Sling Orange",
+          "history": [
+            {
+              "date": "2015-02-09",
+              "price": 20
+            },
+            {
+              "date": "2018-06-28",
+              "price": 25
+            },
+            {
+              "date": "2019-12-23",
+              "price": 30
+            },
+            {
+              "date": "2021-01-27",
+              "price": 35
+            },
+            {
+              "date": "2022-11-03",
+              "price": 40
+            },
+            {
+              "date": "2024-12-20",
+              "price": 45.99
+            }
+          ]
+        },
+        "blue": {
+          "label": "Sling Blue",
+          "history": [
+            {
+              "date": "2016-06-30",
+              "price": 25
+            },
+            {
+              "date": "2019-12-23",
+              "price": 30
+            },
+            {
+              "date": "2021-01-27",
+              "price": 35
+            },
+            {
+              "date": "2022-11-03",
+              "price": 40
+            },
+            {
+              "date": "2024-12-20",
+              "price": 45.99
+            }
+          ]
+        },
+        "select": {
+          "label": "Sling Select",
+          "history": [
+            {
+              "date": "2025-08-19",
+              "price": 19.99
+            }
+          ]
+        },
+        "essentials": {
+          "label": "Sling Essentials",
+          "history": [
+            {
+              "date": "2026-04-09",
+              "price": 19.99
+            }
+          ]
+        }
+      },
+      "upcoming": [],
+      "notes": "Live TV (always ad-supported; there is no ad-free option). Sling Orange and Sling Blue are the two core plans (Orange carries ESPN and Disney channels; Blue carries Fox, NBC and more simultaneous streams) and have usually been priced alike; Orange is charted here. Sling Select (August 2025) and Sling Essentials (April 2026) are lower-cost limited bundles shown as recent additions. Sling Blue costs more in markets where it includes local ABC, NBC or Fox stations: $49.99 per month with one or two of those stations and $54.99 with all three. The Blue prices shown are for markets without them."
+    },
+    "fubo": {
+      "name": "fuboTV",
+      "color": "#F8530E",
+      "url": "https://www.fubo.tv",
+      "category": "liveTv",
+      "feeNote": "Prices shown exclude Fubo's regional sports fee, a mandatory monthly surcharge added at checkout in areas where the channel lineup includes regional sports networks. It varies by location from $3.99 to $16.99 per month.",
+      "plans": {
+        "standard": {
+          "label": "Pro",
+          "history": [
+            {
+              "date": "2017-04-10",
+              "price": 34.99
+            },
+            {
+              "date": "2018-04-18",
+              "price": 44.99,
+              "notes": [
+                "Effective date is the earliest date this price is confirmed in reporting; the increase may have taken effect earlier in 2018.",
+                "This followed an interim step: from October 2017, new subscribers paid $39.99 a month nationally and $44.99 in markets with NESN and MSG, while subscribers who joined at launch kept their $34.99 rate."
+              ]
+            },
+            {
+              "date": "2019-03-28",
+              "price": 54.99
+            },
+            {
+              "date": "2020-07-01",
+              "price": 64.99,
+              "notes": [
+                "Existing customers were automatically moved to the family plan at $64.99/month."
+              ]
+            },
+            {
+              "date": "2022-03-14",
+              "price": 69.99,
+              "notes": [
+                "fuboTV removed its cheapest Starter plan; this base tier is now called Pro."
+              ]
+            },
+            {
+              "date": "2023-01-07",
+              "price": 74.99
+            },
+            {
+              "date": "2024-01-10",
+              "price": 79.99
+            },
+            {
+              "date": "2025-01-27",
+              "price": 84.99
+            },
+            {
+              "date": "2025-12-05",
+              "price": 73.99
+            },
+            {
+              "date": "2026-06-15",
+              "price": 88.99
+            }
+          ]
+        },
+        "elite": {
+          "label": "Elite",
+          "history": [
+            {
+              "date": "2020-09-25",
+              "price": 79.99,
+              "notes": [
+                "Top-tier bundle adding the Fubo Extra channel pack, expanded cloud DVR, and more simultaneous streams."
+              ]
+            },
+            {
+              "date": "2023-01-07",
+              "price": 84.99
+            },
+            {
+              "date": "2024-01-10",
+              "price": 89.99
+            },
+            {
+              "date": "2025-01-27",
+              "price": 94.99
+            },
+            {
+              "date": "2025-12-05",
+              "price": 83.99
+            },
+            {
+              "date": "2026-06-15",
+              "price": 98.99
+            }
+          ]
+        },
+        "sportsNews": {
+          "label": "Sports + News",
+          "history": [
+            {
+              "date": "2025-09-02",
+              "price": 55.99
+            },
+            {
+              "date": "2026-06-15",
+              "price": 64.99
+            }
+          ]
+        }
+      },
+      "referencePlans": [
+        {
+          "label": "Fubo Latino",
+          "price": 19.99,
+          "date": "2026-06-10"
+        },
+        {
+          "label": "Ultimate",
+          "price": 113.99,
+          "date": "2026-07-07"
+        },
+        {
+          "label": "Deluxe",
+          "price": 118.99,
+          "date": "2026-07-07"
+        }
+      ],
+      "upcoming": [],
+      "notes": "Live TV with a heavy sports focus (always ad-supported; there is no ad-free option). The base plan launched in 2017 as Fubo Premier and has since been called Fubo and Standard before its current name, Pro; it is charted here. The Elite tier is a premium top bundle launched in September 2020 (an earlier, smaller Fubo Extra tier from 2018 later became a channel add-on and is not tracked here). Fubo Sports + News is a lower-cost skinny sports bundle launched in September 2025. In December 2025 Fubo lowered prices during a carriage dispute with NBCUniversal, then raised prices again in June 2026 after the dispute was resolved and NBCUniversal channels were restored. In October 2025, Fubo and Hulu + Live TV completed a corporate combination (Disney owns about 70% of Fubo), creating the sixth-largest US pay TV company; the two continue operating as separate consumer brands with separate pricing."
+    },
+    "directvstream": {
+      "name": "DIRECTV STREAM",
+      "color": "#7C5CFC",
+      "url": "https://www.directv.com/stream/",
+      "category": "liveTv",
+      "plans": {
+        "standard": {
+          "label": "Entertainment (base plan)",
+          "history": [
+            {
+              "date": "2016-11-30",
+              "price": 35,
+              "notes": [
+                "Launched as DIRECTV NOW on November 30, 2016. The entry package was $35/mo for 60+ channels, and AT&T also ran a $35/mo launch promotion on the larger 'Go Big' package (normally $60/mo), grandfathering in those early subscribers."
+              ]
+            },
+            {
+              "date": "2018-07-26",
+              "price": 40
+            },
+            {
+              "date": "2019-03-13",
+              "price": 50,
+              "notes": [
+                "March 2019 revamp: AT&T restructured the DIRECTV NOW packages to add HBO with fewer channels, raising the entry price by about $10 to $50/mo. The service was renamed AT&T TV Now in August 2019."
+              ]
+            },
+            {
+              "date": "2019-10-18",
+              "price": 65
+            },
+            {
+              "date": "2020-04-06",
+              "price": 55,
+              "notes": [
+                "Price decrease: the 'Plus' package dropped from $65 to $55/mo (a $10 cut) when HBO was removed from the lineup ahead of the HBO Max launch."
+              ]
+            },
+            {
+              "date": "2021-01-12",
+              "price": 69.99,
+              "notes": [
+                "AT&T retired the DIRECTV NOW / AT&T TV Now branding and moved new customers to AT&T TV packages, with the 'Entertainment' base tier at $69.99/mo."
+              ]
+            },
+            {
+              "date": "2023-01-22",
+              "price": 74.99,
+              "notes": [
+                "The service had by then been rebranded DIRECTV STREAM (launched August 2, 2021)."
+              ]
+            },
+            {
+              "date": "2023-11-05",
+              "price": 79.99
+            },
+            {
+              "date": "2024-10-06",
+              "price": 86.99
+            },
+            {
+              "date": "2025-10-05",
+              "price": 89.99,
+              "notes": [
+                "Part of a wider increase that raised some DIRECTV plans by up to $11/mo and some add-ons by $5/mo."
+              ]
+            },
+            {
+              "date": "2026-11-10",
+              "price": 94.99,
+              "notes": [
+                "DIRECTV did not announce this increase. The date shown is when the new price was first observed on DIRECTV's website; the site still listed the previous price on November 2, 2026, so the change took effect at some point in between."
+              ]
+            }
+          ]
+        }
+      },
+      "referencePlans": [
+        {
+          "label": "Choice (signature tier)",
+          "price": 99.99,
+          "date": "2026-11-10"
+        },
+        {
+          "label": "Ultimate (signature tier)",
+          "price": 129.99,
+          "date": "2026-10-07"
+        },
+        {
+          "label": "Premier (signature tier)",
+          "price": 174.99,
+          "date": "2026-10-07"
+        },
+        {
+          "label": "Óptimo Más (Spanish-language tier)",
+          "price": 89.99,
+          "date": "2026-10-07"
+        },
+        {
+          "label": "MySports (genre pack)",
+          "price": 64.99,
+          "date": "2026-10-07"
+        },
+        {
+          "label": "MyEntertainment (genre pack)",
+          "price": 42.99,
+          "date": "2026-10-07"
+        },
+        {
+          "label": "MyNews (genre pack)",
+          "price": 44.99,
+          "date": "2026-10-07"
+        },
+        {
+          "label": "MiEspañol (genre pack)",
+          "price": 37.99,
+          "date": "2026-10-07"
+        },
+        {
+          "label": "MyKids (genre pack)",
+          "price": 20.99,
+          "date": "2026-10-07"
+        }
+      ],
+      "upcoming": [],
+      "notes": "Always ad-supported live TV; no ad-free option (the Entertainment base plan is charted). Renamed repeatedly: launched as DIRECTV NOW (2016), became AT&T TV Now (2019), then ran alongside AT&T TV (2020), which was rebranded DIRECTV STREAM when AT&T spun off DIRECTV with TPG. In April 2025 DIRECTV retired the standalone 'DIRECTV STREAM' brand and folded the streaming service into its main DIRECTV offering. The charted line follows the entry-level base package through these renames (Live a Little to Plus to Entertainment). Signature tiers (Choice and above) carry a Regional Sports Network fee up to $23.99/mo, and leasing the optional Gemini device adds $10/mo (streaming on your own device avoids it); these fees are not included in the tracked headline price. A free ad-supported tier, MyFree DIRECTV, also exists. Genre Packs (MySports, MyEntertainment, MyNews, MiEspañol, MyKids) launched in 2024-2025 as lower-cost curated bundles and are listed as a current snapshot rather than charted. On June 25, 2026, several Genre Packs rose to the prices listed below (MyEntertainment by $8, MyNews by $5, MiEspañol by $3 and MyKids by $1) while the new MySports Genre Pack held its price; the legacy 'MySports Original' plan rose by $10, and the MySports Extra and MyCinema add-ons each rose by $1. Signature packages (Choice and above) rose in the same round, but DIRECTV communicated those per-customer without publishing uniform figures."
+    },
+    "philo": {
+      "name": "Philo",
+      "color": "#1CA9B0",
+      "url": "https://www.philo.com",
+      "category": "liveTv",
+      "plans": {
+        "standard": {
+          "label": "Bundle+",
+          "history": [
+            {
+              "date": "2017-11-14",
+              "price": 16
+            },
+            {
+              "date": "2019-05-06",
+              "price": 20,
+              "notes": [
+                "The base package expanded to include 13 more channels."
+              ]
+            },
+            {
+              "date": "2021-06-08",
+              "price": 25
+            },
+            {
+              "date": "2024-06-12",
+              "price": 28,
+              "notes": [
+                "This plan was renamed Core, with AMC+ (with ads) now included for new subscribers; Philo also launched a free ad-supported streaming tier for non-subscribers the same day."
+              ]
+            },
+            {
+              "date": "2025-09-30",
+              "price": 33,
+              "notes": [
+                "Core subscribers gained ad-supported access to HBO Max and discovery+ as part of their existing subscription.",
+                "Core was renamed Bundle+ in March 2026 with no change in price, when Philo launched the cheaper Essential plan alongside it."
+              ]
+            }
+          ]
+        },
+        "essential": {
+          "label": "Essential",
+          "history": [
+            {
+              "date": "2026-03-10",
+              "price": 25,
+              "notes": [
+                "Launched as a new, cheaper plan with the same live channel lineup and none of the bundled streaming extras (AMC+ (with ads), HBO Max (Basic with Ads) and discovery+), which stay with Bundle+."
+              ]
+            }
+          ]
+        }
+      },
+      "upcoming": [],
+      "notes": "Live TV (always ad-supported; there is no ad-free option). Originally launched unnamed at $16/mo in 2017. Renamed Core in 2024, when it added AMC+ (with ads) for new subscribers, and gained ad-supported access to HBO Max and discovery+ in September 2025. In March 2026 Core was renamed Bundle+ at the same price (the plan charted here), still including AMC+ (with ads), HBO Max (Basic with Ads) and discovery+, and Philo launched Essential, a cheaper plan with the same live channels and no bundled streaming extras."
+    }
+  }
+}

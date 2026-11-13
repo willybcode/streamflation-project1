@@ -1,0 +1,15 @@
+service_name,month,kaggle_price,tracker_price,match
+Apple TV,2023-10-01,6.99,9.99,False
+Apple TV,2023-11-01,6.99,9.99,False
+Apple TV,2023-12-01,6.99,9.99,False
+HBO Max,2023-01-01,14.99,15.99,False
+Hulu,2022-10-01,12.99,14.99,False
+Hulu,2022-11-01,12.99,14.99,False
+Hulu,2023-10-01,14.99,17.99,False
+Hulu,2023-11-01,14.99,17.99,False
+Hulu,2023-12-01,14.99,17.99,False
+Netflix,2023-10-01,15.49,11.99,False
+Netflix,2023-11-01,15.49,11.99,False
+Netflix,2023-12-01,15.49,11.99,False
+Netflix,2024-01-01,15.49,11.99,False
+Peacock,2023-07-01,9.99,11.99,False

@@ -1,0 +1,21 @@
+plan_id,service_name,plan_label,tier,addon,discontinued,launch_date,launch_price,latest_date,latest_price,since_launch_usd,since_launch_pct,n_changes,n_decreases,cagr_pct,months_tracked
+Disney+ | Premium (no ads),Disney+,Premium (no ads),no ads,False,False,2019-11-12,6.99,2026-09-23,21.49,14.5,207.4,6,0,17.77916913013986,82.4
+Apple TV | Monthly,Apple TV,Monthly,no ads,False,False,2019-11-01,4.99,2026-08-28,14.99,10.0,200.4,4,0,17.495688758969763,81.9
+Peacock | Premium (with ads),Peacock,Premium (with ads),with ads,False,False,2020-07-15,4.99,2026-08-18,12.99,8.0,160.3,4,0,17.007681674552643,73.1
+Netflix | Standard,Netflix,Standard,no ads,False,False,2010-11-22,7.99,2026-03-26,19.99,12.0,150.2,8,0,6.160856488311839,184.1
+Netflix | Premium,Netflix,Premium,no ads,False,False,2013-04-22,11.99,2026-03-26,26.99,15.0,125.1,7,0,6.479287989735472,155.1
+Peacock | Premium Plus (no ads),Peacock,Premium Plus (no ads),no ads,False,False,2020-07-15,9.99,2026-08-18,19.99,10.0,100.1,4,0,12.061390523138993,73.1
+Paramount+ | Essential (with ads),Paramount+,Essential (with ads),with ads,False,False,2021-06-07,4.99,2026-01-15,8.99,4.0,80.2,3,0,13.628825124778633,55.3
+Hulu | No Ads,Hulu,No Ads,no ads,False,False,2015-09-02,11.99,2026-09-23,21.49,9.5,79.2,5,0,5.418930349459039,132.7
+Prime Video | Prime Video Ultra (ad-free add-on),Prime Video,Prime Video Ultra (ad-free add-on),add-on,True,False,2024-01-29,2.99,2026-04-10,4.99,2.0,66.9,1,0,26.27226614599387,26.3
+Disney+ | Basic (with ads),Disney+,Basic (with ads),with ads,False,False,2022-12-08,7.99,2026-09-23,12.49,4.5,56.3,3,0,12.50445079314555,45.5
+Prime Video | Standalone (ad-free),Prime Video,Standalone (ad-free),no ads,False,False,2016-04-18,8.99,2026-04-10,13.98,4.99,55.5,2,0,4.525211169247578,119.7
+Netflix | Basic (discontinued),Netflix,Basic (discontinued),no ads,False,True,2014-05-09,7.99,2023-10-18,11.99,4.0,50.1,3,0,4.392386682855931,113.3
+Paramount+ | Premium,Paramount+,Premium,no ads,False,False,2021-03-04,9.99,2026-01-15,13.99,4.0,40.0,3,0,7.163450577010866,58.4
+Netflix | Standard with Ads,Netflix,Standard with Ads,with ads,False,False,2022-11-03,6.99,2026-03-26,8.99,2.0,28.6,2,0,7.700692739296144,40.7
+Hulu | With Ads,Hulu,With Ads,with ads,False,False,2010-06-29,9.99,2026-09-23,12.49,2.5,25.0,7,2,1.3852744819854212,194.8
+HBO Max | Standard,HBO Max,Standard,no ads,False,False,2015-04-07,14.99,2025-10-21,18.49,3.5,23.3,3,0,2.0109344467419854,126.5
+HBO Max | Premium,HBO Max,Premium,no ads,False,False,2023-05-23,19.99,2025-10-21,22.99,3.0,15.0,2,0,5.961897217145973,29.0
+"Peacock | Select (with ads, limited content)",Peacock,"Select (with ads, limited content)",with ads,False,False,2025-07-23,7.99,2026-08-18,8.99,1.0,12.5,1,0,11.64624587433889,12.8
+HBO Max | Basic With Ads,HBO Max,Basic With Ads,with ads,False,False,2021-06-02,9.99,2025-10-21,10.99,1.0,10.0,1,0,2.199121648096347,52.6
+Prime Video | Standalone (with ads),Prime Video,Standalone (with ads),with ads,False,False,2024-01-29,8.99,2024-01-29,8.99,0.0,0.0,0,0,0.0,1.0

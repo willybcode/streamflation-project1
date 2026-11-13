@@ -1,0 +1,70 @@
+/* Streamflation dashboard — layout & typography */
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: "Segoe UI", "Inter", system-ui, sans-serif;
+  background: #f4f6f8;
+  color: #212529;
+}
+.page { max-width: 1500px; margin: 0 auto; padding: 20px 28px 40px; }
+
+/* header */
+.header {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  gap: 24px; flex-wrap: wrap; margin-bottom: 18px;
+}
+.header h1 { margin: 0 0 4px; font-size: 30px; letter-spacing: -0.5px; }
+.subtitle { margin: 0; max-width: 560px; color: #495057; }
+
+/* KPI strip */
+.kpis { display: flex; gap: 12px; flex-wrap: wrap; }
+.kpis > div {
+  background: #fff; border: 1px solid #e2e6ea; border-radius: 10px;
+  padding: 10px 16px; min-width: 130px; text-align: center;
+}
+.kpi-v { font-size: 22px; font-weight: 650; color: #2A6F97; }
+.kpi-l { font-size: 11.5px; color: #6c757d; text-transform: uppercase; letter-spacing: 0.4px; }
+
+/* layout: control rail + question grid */
+.layout { display: flex; gap: 18px; align-items: flex-start; }
+.rail {
+  flex: 0 0 250px; position: sticky; top: 12px;
+  background: #fff; border: 1px solid #e2e6ea; border-radius: 12px; padding: 16px 18px;
+}
+.rail h3 { margin: 0 0 12px; }
+.rail label { display: block; font-size: 12px; font-weight: 600; margin: 14px 0 6px; color: #495057; }
+.rail .Select-control { border-radius: 8px; }
+.tier-checks label { margin: 4px 12px 4px 0; font-size: 13px; font-weight: 500; }
+.muted { color: #6c757d; font-size: 12px; }
+.muted ul { padding-left: 16px; margin: 6px 0; }
+.btn {
+  margin-top: 16px; padding: 8px 14px; border: 1px solid #2A6F97; border-radius: 8px;
+  background: #fff; color: #2A6F97; cursor: pointer; font-weight: 600;
+}
+.btn:hover { background: #2A6F97; color: #fff; }
+
+/* question grid */
+.grid {
+  flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 18px; min-width: 0;
+}
+.card {
+  background: #fff; border: 1px solid #e2e6ea; border-radius: 12px;
+  padding: 14px 18px 6px; min-width: 0;
+}
+.card h3 { margin: 2px 0 2px; font-size: 15.5px; }
+.card .q { margin: 0 0 2px; font-size: 12.5px; color: #6c757d; line-height: 1.45; min-height: 34px; }
+
+/* calculator */
+.calc { margin-top: 18px; }
+.calc-controls { display: flex; gap: 30px; flex-wrap: wrap; margin-bottom: 8px; }
+
+footer {
+  margin-top: 26px; padding-top: 12px; border-top: 1px solid #dee2e6;
+  font-size: 11.5px; color: #6c757d; max-width: 1100px;
+}
+
+@media (max-width: 1080px) {
+  .layout { flex-direction: column; }
+  .rail { position: static; width: 100%; flex-basis: auto; }
+  .grid { grid-template-columns: 1fr; width: 100%; }
+}

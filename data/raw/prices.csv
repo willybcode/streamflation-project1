@@ -1,0 +1,186 @@
+service_key,service_name,category,plan_key,plan_label,discontinued,addon,effective_date,price_usd
+netflix,Netflix,onDemand,adSupported,Standard with Ads,false,false,2022-11-03,6.99
+netflix,Netflix,onDemand,adSupported,Standard with Ads,false,false,2025-01-21,7.99
+netflix,Netflix,onDemand,adSupported,Standard with Ads,false,false,2026-03-26,8.99
+netflix,Netflix,onDemand,basic,Basic (discontinued),true,false,2014-05-09,7.99
+netflix,Netflix,onDemand,basic,Basic (discontinued),true,false,2019-01-15,8.99
+netflix,Netflix,onDemand,basic,Basic (discontinued),true,false,2022-01-14,9.99
+netflix,Netflix,onDemand,basic,Basic (discontinued),true,false,2023-10-18,11.99
+netflix,Netflix,onDemand,standard,Standard,false,false,2010-11-22,7.99
+netflix,Netflix,onDemand,standard,Standard,false,false,2014-05-09,8.99
+netflix,Netflix,onDemand,standard,Standard,false,false,2015-11-11,9.99
+netflix,Netflix,onDemand,standard,Standard,false,false,2017-10-05,10.99
+netflix,Netflix,onDemand,standard,Standard,false,false,2019-01-15,12.99
+netflix,Netflix,onDemand,standard,Standard,false,false,2020-10-29,13.99
+netflix,Netflix,onDemand,standard,Standard,false,false,2022-01-14,15.49
+netflix,Netflix,onDemand,standard,Standard,false,false,2025-01-21,17.99
+netflix,Netflix,onDemand,standard,Standard,false,false,2026-03-26,19.99
+netflix,Netflix,onDemand,premium,Premium,false,false,2013-04-22,11.99
+netflix,Netflix,onDemand,premium,Premium,false,false,2017-10-05,13.99
+netflix,Netflix,onDemand,premium,Premium,false,false,2019-01-15,15.99
+netflix,Netflix,onDemand,premium,Premium,false,false,2020-10-29,17.99
+netflix,Netflix,onDemand,premium,Premium,false,false,2022-01-14,19.99
+netflix,Netflix,onDemand,premium,Premium,false,false,2023-10-18,22.99
+netflix,Netflix,onDemand,premium,Premium,false,false,2025-01-21,24.99
+netflix,Netflix,onDemand,premium,Premium,false,false,2026-03-26,26.99
+disney,Disney+,onDemand,adSupported,Basic (with ads),false,false,2022-12-08,7.99
+disney,Disney+,onDemand,adSupported,Basic (with ads),false,false,2024-10-17,9.99
+disney,Disney+,onDemand,adSupported,Basic (with ads),false,false,2025-10-21,11.99
+disney,Disney+,onDemand,adSupported,Basic (with ads),false,false,2026-09-23,12.49
+disney,Disney+,onDemand,standard,Premium (no ads),false,false,2019-11-12,6.99
+disney,Disney+,onDemand,standard,Premium (no ads),false,false,2021-03-26,7.99
+disney,Disney+,onDemand,standard,Premium (no ads),false,false,2022-12-08,10.99
+disney,Disney+,onDemand,standard,Premium (no ads),false,false,2023-10-12,13.99
+disney,Disney+,onDemand,standard,Premium (no ads),false,false,2024-10-17,15.99
+disney,Disney+,onDemand,standard,Premium (no ads),false,false,2025-10-21,18.99
+disney,Disney+,onDemand,standard,Premium (no ads),false,false,2026-09-23,21.49
+hulu,Hulu,onDemand,adSupported,With Ads,false,false,2010-06-29,9.99
+hulu,Hulu,onDemand,adSupported,With Ads,false,false,2010-11-17,7.99
+hulu,Hulu,onDemand,adSupported,With Ads,false,false,2019-02-26,5.99
+hulu,Hulu,onDemand,adSupported,With Ads,false,false,2021-10-08,6.99
+hulu,Hulu,onDemand,adSupported,With Ads,false,false,2022-10-10,7.99
+hulu,Hulu,onDemand,adSupported,With Ads,false,false,2024-10-17,9.99
+hulu,Hulu,onDemand,adSupported,With Ads,false,false,2025-10-21,11.99
+hulu,Hulu,onDemand,adSupported,With Ads,false,false,2026-09-23,12.49
+hulu,Hulu,onDemand,standard,No Ads,false,false,2015-09-02,11.99
+hulu,Hulu,onDemand,standard,No Ads,false,false,2021-10-08,12.99
+hulu,Hulu,onDemand,standard,No Ads,false,false,2022-10-10,14.99
+hulu,Hulu,onDemand,standard,No Ads,false,false,2023-10-12,17.99
+hulu,Hulu,onDemand,standard,No Ads,false,false,2024-10-17,18.99
+hulu,Hulu,onDemand,standard,No Ads,false,false,2026-09-23,21.49
+espn,ESPN,onDemand,adSupported,Select (formerly ESPN+),false,false,2018-04-12,4.99
+espn,ESPN,onDemand,adSupported,Select (formerly ESPN+),false,false,2020-08-12,5.99
+espn,ESPN,onDemand,adSupported,Select (formerly ESPN+),false,false,2021-08-13,6.99
+espn,ESPN,onDemand,adSupported,Select (formerly ESPN+),false,false,2022-08-23,9.99
+espn,ESPN,onDemand,adSupported,Select (formerly ESPN+),false,false,2023-10-12,10.99
+espn,ESPN,onDemand,adSupported,Select (formerly ESPN+),false,false,2024-10-17,11.99
+espn,ESPN,onDemand,adSupported,Select (formerly ESPN+),false,false,2025-10-21,12.99
+espn,ESPN,onDemand,adSupported,Select (formerly ESPN+),false,false,2026-09-17,13.99
+espn,ESPN,onDemand,unlimited,Unlimited,false,false,2025-08-21,29.99
+espn,ESPN,onDemand,unlimited,Unlimited,false,false,2026-09-17,31.99
+hbomax,HBO Max,onDemand,adSupported,Basic With Ads,false,false,2021-06-02,9.99
+hbomax,HBO Max,onDemand,adSupported,Basic With Ads,false,false,2025-10-21,10.99
+hbomax,HBO Max,onDemand,standard,Standard,false,false,2015-04-07,14.99
+hbomax,HBO Max,onDemand,standard,Standard,false,false,2023-01-12,15.99
+hbomax,HBO Max,onDemand,standard,Standard,false,false,2024-06-04,16.99
+hbomax,HBO Max,onDemand,standard,Standard,false,false,2025-10-21,18.49
+hbomax,HBO Max,onDemand,premium,Premium,false,false,2023-05-23,19.99
+hbomax,HBO Max,onDemand,premium,Premium,false,false,2024-06-04,20.99
+hbomax,HBO Max,onDemand,premium,Premium,false,false,2025-10-21,22.99
+appletv,Apple TV,onDemand,standard,Monthly,false,false,2019-11-01,4.99
+appletv,Apple TV,onDemand,standard,Monthly,false,false,2022-10-24,6.99
+appletv,Apple TV,onDemand,standard,Monthly,false,false,2023-10-25,9.99
+appletv,Apple TV,onDemand,standard,Monthly,false,false,2025-08-21,12.99
+appletv,Apple TV,onDemand,standard,Monthly,false,false,2026-08-28,14.99
+peacock,Peacock,onDemand,adSupported,Premium (with ads),false,false,2020-07-15,4.99
+peacock,Peacock,onDemand,adSupported,Premium (with ads),false,false,2023-07-17,5.99
+peacock,Peacock,onDemand,adSupported,Premium (with ads),false,false,2024-07-18,7.99
+peacock,Peacock,onDemand,adSupported,Premium (with ads),false,false,2025-07-23,10.99
+peacock,Peacock,onDemand,adSupported,Premium (with ads),false,false,2026-08-18,12.99
+peacock,Peacock,onDemand,standard,Premium Plus (no ads),false,false,2020-07-15,9.99
+peacock,Peacock,onDemand,standard,Premium Plus (no ads),false,false,2023-07-17,11.99
+peacock,Peacock,onDemand,standard,Premium Plus (no ads),false,false,2024-07-18,13.99
+peacock,Peacock,onDemand,standard,Premium Plus (no ads),false,false,2025-07-23,16.99
+peacock,Peacock,onDemand,standard,Premium Plus (no ads),false,false,2026-08-18,19.99
+peacock,Peacock,onDemand,select,"Select (with ads, limited content)",false,false,2025-07-23,7.99
+peacock,Peacock,onDemand,select,"Select (with ads, limited content)",false,false,2026-08-18,8.99
+paramount,Paramount+,onDemand,adSupported,Essential (with ads),false,false,2021-06-07,4.99
+paramount,Paramount+,onDemand,adSupported,Essential (with ads),false,false,2023-06-27,5.99
+paramount,Paramount+,onDemand,adSupported,Essential (with ads),false,false,2024-08-20,7.99
+paramount,Paramount+,onDemand,adSupported,Essential (with ads),false,false,2026-01-15,8.99
+paramount,Paramount+,onDemand,standard,Premium,false,false,2021-03-04,9.99
+paramount,Paramount+,onDemand,standard,Premium,false,false,2023-06-27,11.99
+paramount,Paramount+,onDemand,standard,Premium,false,false,2024-08-20,12.99
+paramount,Paramount+,onDemand,standard,Premium,false,false,2026-01-15,13.99
+primevideo,Prime Video,onDemand,adSupported,Standalone (with ads),false,false,2024-01-29,8.99
+primevideo,Prime Video,onDemand,adFreeAddon,Prime Video Ultra (ad-free add-on),false,true,2024-01-29,2.99
+primevideo,Prime Video,onDemand,adFreeAddon,Prime Video Ultra (ad-free add-on),false,true,2026-04-10,4.99
+primevideo,Prime Video,onDemand,standard,Standalone (ad-free),false,false,2016-04-18,8.99
+primevideo,Prime Video,onDemand,standard,Standalone (ad-free),false,false,2024-01-29,11.98
+primevideo,Prime Video,onDemand,standard,Standalone (ad-free),false,false,2026-04-10,13.98
+youtubetv,YouTube TV,liveTv,standard,Base Plan,false,false,2017-04-05,35.00
+youtubetv,YouTube TV,liveTv,standard,Base Plan,false,false,2018-03-13,40.00
+youtubetv,YouTube TV,liveTv,standard,Base Plan,false,false,2019-05-13,49.99
+youtubetv,YouTube TV,liveTv,standard,Base Plan,false,false,2020-06-30,64.99
+youtubetv,YouTube TV,liveTv,standard,Base Plan,false,false,2023-04-18,72.99
+youtubetv,YouTube TV,liveTv,standard,Base Plan,false,false,2024-12-12,82.99
+youtubetv,YouTube TV,liveTv,fourKPlus,Base Plan with 4K Plus,false,true,2021-06-28,84.98
+youtubetv,YouTube TV,liveTv,fourKPlus,Base Plan with 4K Plus,false,true,2023-04-18,82.98
+youtubetv,YouTube TV,liveTv,fourKPlus,Base Plan with 4K Plus,false,true,2024-12-12,92.98
+hululivetv,Hulu + Live TV,liveTv,adSupported,With Ads,false,false,2017-05-03,39.99
+hululivetv,Hulu + Live TV,liveTv,adSupported,With Ads,false,false,2019-02-26,44.99
+hululivetv,Hulu + Live TV,liveTv,adSupported,With Ads,false,false,2019-12-18,54.99
+hululivetv,Hulu + Live TV,liveTv,adSupported,With Ads,false,false,2020-12-18,64.99
+hululivetv,Hulu + Live TV,liveTv,adSupported,With Ads,false,false,2021-12-21,69.99
+hululivetv,Hulu + Live TV,liveTv,adSupported,With Ads,false,false,2022-12-08,74.99
+hululivetv,Hulu + Live TV,liveTv,adSupported,With Ads,false,false,2023-10-12,76.99
+hululivetv,Hulu + Live TV,liveTv,adSupported,With Ads,false,false,2024-10-17,82.99
+hululivetv,Hulu + Live TV,liveTv,adSupported,With Ads,false,false,2025-10-21,89.99
+hululivetv,Hulu + Live TV,liveTv,adSupported,With Ads,false,false,2026-09-23,99.99
+hululivetv,Hulu + Live TV,liveTv,standard,No Ads,false,false,2017-05-03,43.99
+hululivetv,Hulu + Live TV,liveTv,standard,No Ads,false,false,2019-02-26,50.99
+hululivetv,Hulu + Live TV,liveTv,standard,No Ads,false,false,2019-12-18,60.99
+hululivetv,Hulu + Live TV,liveTv,standard,No Ads,false,false,2020-12-18,70.99
+hululivetv,Hulu + Live TV,liveTv,standard,No Ads,false,false,2021-12-21,75.99
+hululivetv,Hulu + Live TV,liveTv,standard,No Ads,false,false,2022-12-08,82.99
+hululivetv,Hulu + Live TV,liveTv,standard,No Ads,false,false,2023-10-12,89.99
+hululivetv,Hulu + Live TV,liveTv,standard,No Ads,false,false,2024-10-17,95.99
+hululivetv,Hulu + Live TV,liveTv,standard,No Ads,false,false,2025-10-21,99.99
+hululivetv,Hulu + Live TV,liveTv,standard,No Ads,false,false,2026-09-23,109.99
+hululivetv,Hulu + Live TV,liveTv,liveTvOnly,Live TV (only),false,false,2017-05-03,38.99
+hululivetv,Hulu + Live TV,liveTv,liveTvOnly,Live TV (only),false,false,2019-02-26,43.99
+hululivetv,Hulu + Live TV,liveTv,liveTvOnly,Live TV (only),false,false,2019-12-18,53.99
+hululivetv,Hulu + Live TV,liveTv,liveTvOnly,Live TV (only),false,false,2020-12-18,63.99
+hululivetv,Hulu + Live TV,liveTv,liveTvOnly,Live TV (only),false,false,2021-12-21,68.99
+hululivetv,Hulu + Live TV,liveTv,liveTvOnly,Live TV (only),false,false,2023-10-12,75.99
+hululivetv,Hulu + Live TV,liveTv,liveTvOnly,Live TV (only),false,false,2024-10-17,81.99
+hululivetv,Hulu + Live TV,liveTv,liveTvOnly,Live TV (only),false,false,2025-10-21,88.99
+hululivetv,Hulu + Live TV,liveTv,liveTvOnly,Live TV (only),false,false,2026-09-23,98.99
+sling,Sling TV,liveTv,standard,Sling Orange,false,false,2015-02-09,20.00
+sling,Sling TV,liveTv,standard,Sling Orange,false,false,2018-06-28,25.00
+sling,Sling TV,liveTv,standard,Sling Orange,false,false,2019-12-23,30.00
+sling,Sling TV,liveTv,standard,Sling Orange,false,false,2021-01-27,35.00
+sling,Sling TV,liveTv,standard,Sling Orange,false,false,2022-11-03,40.00
+sling,Sling TV,liveTv,standard,Sling Orange,false,false,2024-12-20,45.99
+sling,Sling TV,liveTv,blue,Sling Blue,false,false,2016-06-30,25.00
+sling,Sling TV,liveTv,blue,Sling Blue,false,false,2019-12-23,30.00
+sling,Sling TV,liveTv,blue,Sling Blue,false,false,2021-01-27,35.00
+sling,Sling TV,liveTv,blue,Sling Blue,false,false,2022-11-03,40.00
+sling,Sling TV,liveTv,blue,Sling Blue,false,false,2024-12-20,45.99
+sling,Sling TV,liveTv,select,Sling Select,false,false,2025-08-19,19.99
+sling,Sling TV,liveTv,essentials,Sling Essentials,false,false,2026-04-09,19.99
+fubo,fuboTV,liveTv,standard,Pro,false,false,2017-04-10,34.99
+fubo,fuboTV,liveTv,standard,Pro,false,false,2018-04-18,44.99
+fubo,fuboTV,liveTv,standard,Pro,false,false,2019-03-28,54.99
+fubo,fuboTV,liveTv,standard,Pro,false,false,2020-07-01,64.99
+fubo,fuboTV,liveTv,standard,Pro,false,false,2022-03-14,69.99
+fubo,fuboTV,liveTv,standard,Pro,false,false,2023-01-07,74.99
+fubo,fuboTV,liveTv,standard,Pro,false,false,2024-01-10,79.99
+fubo,fuboTV,liveTv,standard,Pro,false,false,2025-01-27,84.99
+fubo,fuboTV,liveTv,standard,Pro,false,false,2025-12-05,73.99
+fubo,fuboTV,liveTv,standard,Pro,false,false,2026-06-15,88.99
+fubo,fuboTV,liveTv,elite,Elite,false,false,2020-09-25,79.99
+fubo,fuboTV,liveTv,elite,Elite,false,false,2023-01-07,84.99
+fubo,fuboTV,liveTv,elite,Elite,false,false,2024-01-10,89.99
+fubo,fuboTV,liveTv,elite,Elite,false,false,2025-01-27,94.99
+fubo,fuboTV,liveTv,elite,Elite,false,false,2025-12-05,83.99
+fubo,fuboTV,liveTv,elite,Elite,false,false,2026-06-15,98.99
+fubo,fuboTV,liveTv,sportsNews,Sports + News,false,false,2025-09-02,55.99
+fubo,fuboTV,liveTv,sportsNews,Sports + News,false,false,2026-06-15,64.99
+directvstream,DIRECTV STREAM,liveTv,standard,Entertainment (base plan),false,false,2016-11-30,35.00
+directvstream,DIRECTV STREAM,liveTv,standard,Entertainment (base plan),false,false,2018-07-26,40.00
+directvstream,DIRECTV STREAM,liveTv,standard,Entertainment (base plan),false,false,2019-03-13,50.00
+directvstream,DIRECTV STREAM,liveTv,standard,Entertainment (base plan),false,false,2019-10-18,65.00
+directvstream,DIRECTV STREAM,liveTv,standard,Entertainment (base plan),false,false,2020-04-06,55.00
+directvstream,DIRECTV STREAM,liveTv,standard,Entertainment (base plan),false,false,2021-01-12,69.99
+directvstream,DIRECTV STREAM,liveTv,standard,Entertainment (base plan),false,false,2023-01-22,74.99
+directvstream,DIRECTV STREAM,liveTv,standard,Entertainment (base plan),false,false,2023-11-05,79.99
+directvstream,DIRECTV STREAM,liveTv,standard,Entertainment (base plan),false,false,2024-10-06,86.99
+directvstream,DIRECTV STREAM,liveTv,standard,Entertainment (base plan),false,false,2025-10-05,89.99
+directvstream,DIRECTV STREAM,liveTv,standard,Entertainment (base plan),false,false,2026-11-10,94.99
+philo,Philo,liveTv,standard,Bundle+,false,false,2017-11-14,16.00
+philo,Philo,liveTv,standard,Bundle+,false,false,2019-05-06,20.00
+philo,Philo,liveTv,standard,Bundle+,false,false,2021-06-08,25.00
+philo,Philo,liveTv,standard,Bundle+,false,false,2024-06-12,28.00
+philo,Philo,liveTv,standard,Bundle+,false,false,2025-09-30,33.00
+philo,Philo,liveTv,essential,Essential,false,false,2026-03-10,25.00
