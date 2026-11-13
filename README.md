@@ -157,8 +157,12 @@ work1/
 │   ├── app.py        # layout + Dash callbacks (filters, linked views, calculator)
 │   ├── figures.py    # pure figure builders, one per chart
 │   └── assets/style.css
-└── docs/screenshots/ # dashboard_full.png, q1_dumbbell.png, header_kpis.png, calculator.png
+└── docs/
+    └── screenshots/  # dashboard_full.png, q1_dumbbell.png, header_kpis.png, calculator.png
 ```
+
+> `docs/local/` is gitignored: it holds the personal defense notes (presentation script
+> with anticipated questions, and the project process write-up).
 
 ## Caveats
 
