@@ -52,7 +52,20 @@ body {
   padding: 14px 18px 6px; min-width: 0;
 }
 .card h3 { margin: 2px 0 2px; font-size: 15.5px; }
-.card .q { margin: 0 0 2px; font-size: 12.5px; color: #6c757d; line-height: 1.45; min-height: 34px; }
+.card-head {
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 10px; flex-wrap: wrap;
+}
+.badge {
+  font-size: 10.5px; font-weight: 600; letter-spacing: 0.3px;
+  color: #2A6F97; background: #EAF3F8; border: 1px solid #CFE2EE;
+  border-radius: 999px; padding: 3px 9px; white-space: nowrap;
+  text-transform: uppercase;
+}
+.card .q {
+  margin: 4px 0 2px; font-size: 12.5px; color: #6c757d;
+  line-height: 1.5; min-height: 34px;
+}
 
 /* calculator */
 .calc { margin-top: 18px; }
