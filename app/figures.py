@@ -105,7 +105,8 @@ def fig_timeline(events: pd.DataFrame, service_colors: dict[str, str]) -> go.Fig
         tr.marker.line = dict(width=1, color="white")
         tr.hovertemplate = ("<b>%{y}</b> — %{customdata[0]}<br>"
                             "%{x|%d %b %Y}: $%{customdata[2]:.2f} → $%{customdata[1]:.2f}<br>"
-                            "Change: %{customdata[3]:+.2f} USD ({:+.1f}%)<extra></extra>")
+                            "Change: %{customdata[3]:+.2f} USD (%{customdata[4]:+.1f}%)"
+                            "<extra></extra>")
     return _layout(fig, height=380, showlegend=True)
 
 
@@ -242,12 +243,14 @@ def fig_hike_scatter(events: pd.DataFrame) -> go.Figure:
     fig = px.scatter(df, x="months_since_prev", y="change_pct", color="tier",
                      color_discrete_map=TIER_COLORS,
                      size="change_abs", size_max=26,
-                     custom_data=["plan_id", "effective_date", "price_usd", "prev_price", "change_usd"])
+                     custom_data=["plan_id", "effective_date", "price_usd", "prev_price",
+                                  "change_usd", "change_pct"])
     for tr in fig.data:
         tr.marker.line = dict(width=1, color="white")
         tr.hovertemplate = ("<b>%{customdata[0]}</b><br>"
                             "%{customdata[1]|%d %b %Y}: $%{customdata[3]:.2f} → $%{customdata[2]:.2f}<br>"
-                            "Hike: +$%{customdata[4]:.2f} ({:+.1f}%) after %{x:.1f} months<extra></extra>")
+                            "Hike: %{customdata[4]:+.2f} USD (%{customdata[5]:+.1f}%) "
+                            "after %{x:.1f} months<extra></extra>")
     fig.add_hline(y=0, line=dict(color="#ADB5BD", width=1))
     return _layout(fig, xaxis_title="Months since previous change",
                    yaxis_title="Size of change (%)", height=420, showlegend=True)
