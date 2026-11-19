@@ -44,7 +44,7 @@ service port to container port **8050**.
 | Q1 | How much has each plan's price risen since launch? | Dumbbell (launch → latest per plan), ordered by growth | click a row to isolate the service |
 | Q2 | Do price hikes cluster in time ("streamflation")? | Event timeline (dot size = hike) + service × year heatmap | zoom dates, click a dot to isolate |
 | Q3 | How big is the ad-supported vs ad-free gap, and how has it changed? | Step lines of the gap over time + today's gap dumbbell | tier filter, window |
-| Q4 | Have streaming prices risen faster than inflation? | Chained market price index vs CPI-U (rebased) + every plan vs inflation | **analysis window rebases the index** |
+| Q4 | Have streaming prices risen faster than inflation? | Year-over-year paired bars (streaming vs CPI) + every plan vs inflation | year selector, tier filter |
 | Q5 | Do services raise prices in small steps or big jumps? | Bubble scatter: hike size vs months since previous change | hover, tier filter |
 | + | *My subscriptions* calculator | Total monthly cost of a chosen bundle over time, with breakdown | tick services, pick tier mode |
 
@@ -109,7 +109,9 @@ Every check and finding is in [data/processed/validation_report.md](data/process
   - indexed lines with a rebasing window make "faster than inflation" a
     *question with a control* instead of a fixed claim;
   - steps (`hv` lines) everywhere prices are constant between changes — a
-    smooth line would imply continuous change.
+    smooth line would imply continuous change;
+  - year-over-year paired bars for Q4 rather than a cumulative index, because
+    compounding a 2010 price cut with a 1-plan basket would misstate the trend.
 
 **Interaction design** — every control supports a question: service filter &
 click-to-isolate (linked views across Q1/Q2), tier filter (Q3/Q5), the analysis
@@ -135,10 +137,12 @@ brand colours so colour means the same thing across views.
   ($4.99 → $12.99), Netflix Standard +150% (Q1 dumbbell).
 - **Ad-free is a growing tax:** the gap has widened as services price the
   with-ads tier down and the no-ads tier up (Q3).
-- **It depends on when you look:** over the full 2010–2026 window the chained
-  price index (+54.7%) essentially matches CPI (+54.8%) — dragged down by
-  Hulu's early cuts; from mid-2015 onward prices run **+85.9% vs +41.5%
-  inflation** (Q4). The rebasing window control is what makes this honest.
+- **The break is recent and sharp.** Comparing each year's change with that year's
+  inflation: 2011–2018 streaming was flat or behind (0–4% vs 0.6–3.1%), 2021 it
+  *lost* ground (2.9% vs 7.2%), then 2022–2025 it ran **1.4–4.0x inflation**, rising to
+  3.6x in 2023 (11.8% against 3.3%) and 4.0x in 2025. Year-over-year is used instead of a
+  cumulative index because the equal-weight index has only 1–2 plans in 2010–11,
+  so one early Hulu price cut would distort the whole series (Q4).
 
 ## Project structure
 

@@ -13,8 +13,8 @@ from dash import Input, Output, State, callback, dcc, html, no_update
 import pandas as pd
 
 from figures import (TIER_COLORS, fig_calculator, fig_dumbbell, fig_gap_dumbbell,
-                     fig_gap_lines, fig_growth_vs_inflation, fig_heatmap, fig_inflation_gap,
-                     fig_hike_scatter, fig_timeline, load_data)
+                     fig_gap_lines, fig_growth_vs_inflation, fig_heatmap, fig_hike_scatter,
+                     fig_timeline, fig_yoy_inflation, load_data)
 
 DATA = load_data()
 MONTHS = pd.date_range("2010-06-01", "2026-09-01", freq="MS")
@@ -147,14 +147,16 @@ app.layout = html.Div(className="page", children=[
                           "the cheapest with-ads plan, the blue dot the cheapest no-ads plan, and the "
                           "line between them is the premium. This is the chart on the left collapsed "
                           "to its latest value.")),
-            card("Q4 · Faster than inflation?", "Diverging area chart",
-                 "Have streaming prices risen faster than the general cost of living?",
+            card("Q4 · Faster than inflation, year by year?", "Paired bar chart",
+                 "In which years did streaming prices outpace the general cost of living?",
                  "fig-q4a",
-                 details=("One line, one meaning. The chart shows streaming prices minus inflation, "
-                          "cumulatively from the start of the analysis window. At zero the two rose "
-                          "together; above zero streaming outpaced inflation; below zero it lagged. "
-                          "Move the analysis window and the counting restarts from the new date, so "
-                          "you can test whether the answer depends on when you start."),
+                 details=("Each year compares two things side by side: how much streaming prices rose "
+                          "that year, and how much US inflation rose that year. Because every year is "
+                          "self-contained, one early price cut cannot distort later years the way it "
+                          "does in a cumulative index. Red above grey means streaming outpaced "
+                          "inflation; grey above red means it lagged, as in 2021 when inflation spiked. "
+                          "The multiple above each pair says how many times inflation the streaming "
+                          "increase was."),
                  span=2),
             card("Q4 · Every plan vs inflation", "Scatter plot with reference line",
                  "Which individual plans beat inflation over their own lifetime?",
@@ -277,7 +279,7 @@ def update_all(services, tiers, window, advanced):
             fig_hike_scatter(ev_w),
             fig_gap_lines(gap_w, DATA["service_colors"]),
             fig_gap_dumbbell(gap_w),
-            fig_inflation_gap(monthly, market, w0),
+            fig_yoy_inflation(DATA["yoy"]),
             fig_growth_vs_inflation(summary, monthly),
             )
 

@@ -36,6 +36,7 @@ def load_data() -> dict[str, pd.DataFrame]:
         "summary": pd.read_csv(PROC / "plan_summary.csv", parse_dates=["launch_date", "latest_date"]),
         "gap": pd.read_csv(PROC / "ad_gap.csv", parse_dates=["month"]),
         "market": pd.read_csv(PROC / "market_index.csv", parse_dates=["month"]),
+        "yoy": pd.read_csv(PROC / "yoy_comparison.csv"),
     }
     colors = pd.read_csv(PROC / "service_colors.csv")
     palette = {r.service_name: r.color for r in colors.itertuples()}
@@ -186,59 +187,46 @@ def fig_gap_dumbbell(gap: pd.DataFrame) -> go.Figure:
 # ---------------------------------------------------------------------------
 # Q4a — price index vs inflation, rebased at the window start
 # ---------------------------------------------------------------------------
-def fig_inflation_gap(monthly: pd.DataFrame, market: pd.DataFrame, start: pd.Timestamp) -> go.Figure:
-    """Cumulative gap between streaming prices and inflation, in percentage points.
+def fig_yoy_inflation(yoy: pd.DataFrame) -> go.Figure:
+    """Paired bars: each year's streaming price change vs that year's inflation.
 
-    Both series are rebased to the window start and then divided, so a single
-    line carries the whole answer: 0 = prices rose exactly with inflation,
-    above 0 = streaming outpaced it, below 0 = streaming lagged it.
+    Deliberately not cumulative. Every year stands alone, so a single early
+    price event cannot distort the whole series the way it does inside a
+    compounding index.
     """
-    s = market[market["month"] >= start]
-    if s.empty or len(s) < 2:
-        return empty_fig("Window is too short - move the analysis window")
+    if yoy.empty:
+        return empty_fig()
 
-    stream_idx = s["market_index"] / float(s["market_index"].iloc[0]) * 100
-    cpi_idx = s["cpi_index"] / float(s["cpi_index"].iloc[0]) * 100
-    gap = (stream_idx / cpi_idx - 1) * 100
-    last = float(gap.iloc[-1])
-
-    template = (
-        "<b>%{x|%b %Y}</b><br>"
-        "Streaming prices %{customdata[2]}<br>"
-        "%{y:+.1f} percentage points versus inflation<br>"
-        "Streaming index %{customdata[0]:.1f} vs inflation %{customdata[1]:.1f} "
-        "(window start = 100)<extra></extra>"
-    )
-
+    df = yoy.copy()
     fig = go.Figure()
-    fig.add_trace(go.Scatter(
-        x=s["month"],
-        y=gap,
-        mode="lines",
-        name="Streaming minus inflation",
-        line=dict(color="#C1121F", width=3),
-        fill="tozeroy",
-        fillcolor="rgba(193,18,31,0.12)",
-        customdata=np.stack([stream_idx.round(1), cpi_idx.round(1),
-                             np.where(gap >= 0, "ahead of inflation", "behind inflation")], axis=-1),
-        hovertemplate=template,
+    fig.add_trace(go.Bar(
+        x=df["year"], y=df["streaming_yoy"], name="Streaming prices",
+        marker_color="#C1121F",
+        customdata=np.stack([df["gap_pts"], df["coverage"], df["ratio"]], axis=-1),
+        hovertemplate=("<b>%{x}</b><br>"
+                       "Streaming prices rose %{y:.1f}%<br>"
+                       "Gap versus inflation: %{customdata[0]:+.1f} points "
+                       "(%{customdata[2]:.2f}x)<extra></extra>"),
     ))
-    fig.add_hline(y=0, line=dict(color="#495057", width=1.5))
-    fig.add_annotation(
-        x=s["month"].iloc[-1], y=last,
-        text=f"<b>{abs(last):.1f} pts {'ahead' if last >= 0 else 'behind'}</b>",
-        showarrow=False, xanchor="right",
-        yanchor="bottom" if last >= 0 else "top",
-        font=dict(size=11, color="#C1121F"),
-    )
-    fig.add_annotation(
-        x=s["month"].iloc[0], y=0,
-        text="prices track inflation exactly",
-        showarrow=False, xanchor="left", yanchor="bottom",
-        font=dict(size=10, color="#868E96"),
-    )
-    return _layout(fig, yaxis_title="Streaming prices minus inflation (percentage points)",
-                   height=CHART_H, showlegend=False)
+    fig.add_trace(go.Bar(
+        x=df["year"], y=df["cpi_yoy"], name="US inflation (CPI-U)",
+        marker_color="#ADB5BD",
+        customdata=np.stack([df["gap_pts"], df["coverage"], df["ratio"]], axis=-1),
+        hovertemplate=("<b>%{x}</b><br>"
+                       "US inflation %{y:.1f}%<br>"
+                       "Gap versus streaming: %{customdata[0]:+.1f} points<extra></extra>"),
+    ))
+
+    # Label only the years that carry the story: the recent surge.
+    for r in df[df["year"] >= 2022].itertuples():
+        fig.add_annotation(x=r.year, y=max(r.streaming_yoy, r.cpi_yoy) + 0.6,
+                           text=f"<b>{r.ratio:.1f}x</b>", showarrow=False,
+                           font=dict(size=10, color="#C1121F" if r.outpaced else "#495057"))
+    fig.add_hline(y=0, line=dict(color="#495057", width=1))
+
+    return _layout(fig, barmode="group", bargap=0.25, bargroupgap=0.08,
+                   yaxis_title="Price change that year (%)",
+                   height=CHART_H, showlegend=True)
 
 
 # ---------------------------------------------------------------------------

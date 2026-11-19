@@ -157,7 +157,41 @@ def enrich_with_cpi(panel: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
     market["market_index"] = (chain.cumprod().fillna(1.0) * 100).round(2).to_numpy()
     market = market.merge(cpi[["month", "cpi_index_2010"]], on="month")
     market = market.rename(columns={"cpi_index_2010": "cpi_index"})
+
+    # How many plans actually sit in the index each month. The chained index is
+    # equal-weight, so its early years are carried by very few services: in
+    # Jun-2010 there is exactly one plan (Hulu), and Hulu's -20% cut in Nov-2010
+    # is therefore baked into the whole series. Exposing coverage lets the app
+    # say so instead of letting a one-off 2010 cut masquerade as a market trend.
+    market["n_plans"] = market["month"].map(
+        p.groupby("month")["plan_id"].nunique()).fillna(0).astype(int)
     return p, market
+
+
+def build_yoy(market: pd.DataFrame) -> pd.DataFrame:
+    """Year-over-year change of streaming prices vs inflation.
+
+    Each row compares the December-to-December change of the chained index with
+    that of CPI, so every year stands on its own: an event in 2010 cannot leak
+    into 2025 the way it does in a cumulative index. That is what makes this a
+    fairer answer to "did streaming beat inflation?" than compounding a single
+    early price cut.
+    """
+    m = market.sort_values("month").copy()
+    m["streaming_yoy"] = m["market_index"].pct_change(12) * 100
+    m["cpi_yoy"] = m["cpi_index"].pct_change(12) * 100
+    m["coverage"] = m["n_plans"]
+
+    year_end = m[m["month"].dt.month == 12].copy()
+    year_end["year"] = year_end["month"].dt.year
+    year_end = year_end.dropna(subset=["streaming_yoy", "cpi_yoy"])
+
+    out = year_end[["year", "streaming_yoy", "cpi_yoy", "coverage"]].copy()
+    out["gap_pts"] = (out["streaming_yoy"] - out["cpi_yoy"]).round(1)
+    out["outpaced"] = out["gap_pts"] > 0
+    out["ratio"] = (out["streaming_yoy"] / out["cpi_yoy"]).round(2)
+    out[["streaming_yoy", "cpi_yoy"]] = out[["streaming_yoy", "cpi_yoy"]].round(1)
+    return out.reset_index(drop=True)
 
 
 # ----------------------------------------------------------------------------
@@ -270,6 +304,8 @@ def write_report(checks, panel, summary, gap, market, kc_matches, kc_mismatch, k
         "| `since_launch_usd/_pct`, `cagr_pct` | prices_clean, plan_summary | growth from the plan's first recorded price |",
         "| `price_real` | monthly_prices | price deflated by CPIAUCSL into constant " + REAL_BASE + " dollars |",
         "| `market_index` | market_index | chained equal-weight index of all plans (matched-model, BLS-style); a plan launching or retiring never moves it by itself |",
+        "| `n_plans` | market_index | how many plans sit in the index that month — 1 in Jun 2010, 20 today. Low early coverage is why a single 2010-11 Hulu price cut is visible in the index |",
+        "| `streaming_yoy`, `cpi_yoy`, `gap_pts` | yoy_comparison | year-over-year (Dec-to-Dec) change of each series and their difference. Each year stands alone, so early events cannot compound into later years |",
         "| `gap_usd`, `gap_pct` | ad_gap | cheapest no-ads minus cheapest with-ads plan per service/month (add-ons and discontinued plans excluded) |",
         "",
         "## 3. Cross-check vs the independent Kaggle dataset",
@@ -314,6 +350,12 @@ def write_report(checks, panel, summary, gap, market, kc_matches, kc_mismatch, k
         "actual launch (e.g. Netflix's earliest recorded row is Nov 2010).",
         "- Netflix Basic is flagged `discontinued`; the source notes it was phased out for new subscribers "
         "2023-07 and ended for all subscribers 2024-07.",
+        "- **Index coverage is uneven by design.** The chained index is equal-weight, so its "
+        "first year is carried by one plan (Hulu) and its second by two. A single -20% Hulu cut "
+        "in Nov 2010 therefore moves the whole index and is visible for years afterwards. For "
+        "that reason the dashboard answers \"faster than inflation?\" with a year-over-year "
+        "comparison (`yoy_comparison.csv`), where each year is independent, rather than with a "
+        "cumulative index.",
         "- CPI is national all-items inflation (BLS via FRED). It deflates prices; it does not claim anything "
         "about this industry's costs.",
         "- **Missing values:** the CPI series has no published Oct 2025 value (BLS collection gap). It is filled "
@@ -331,6 +373,7 @@ def main() -> None:
     panel = build_monthly_panel(events)
     panel, market = enrich_with_cpi(panel)
     summary = build_plan_summary(events)
+    yoy = build_yoy(market)
     gap = build_ad_gap(panel)
     kc_matches, kc_mismatch, kc_per_svc = crosscheck_kaggle(panel)
 
@@ -339,6 +382,7 @@ def main() -> None:
     summary.to_csv(OUT / "plan_summary.csv", index=False)
     gap.to_csv(OUT / "ad_gap.csv", index=False)
     market.to_csv(OUT / "market_index.csv", index=False)
+    yoy.to_csv(OUT / "yoy_comparison.csv", index=False)
     kc_mismatch.to_csv(OUT / "kaggle_mismatches.csv", index=False)
 
     # Service brand colours from the source's JSON (CC BY 4.0, credited in README).
