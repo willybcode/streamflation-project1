@@ -13,7 +13,7 @@ from dash import Input, Output, State, callback, dcc, html, no_update
 import pandas as pd
 
 from figures import (TIER_COLORS, fig_calculator, fig_dumbbell, fig_gap_dumbbell,
-                     fig_gap_lines, fig_growth_vs_inflation, fig_heatmap, fig_index,
+                     fig_gap_lines, fig_growth_vs_inflation, fig_heatmap, fig_inflation_gap,
                      fig_hike_scatter, fig_timeline, load_data)
 
 DATA = load_data()
@@ -27,15 +27,23 @@ server = app.server
 GRAPH_CONFIG = {"displaylogo": False, "scrollZoom": True, "modeBarButtonsToRemove": ["lasso2d", "select2d"]}
 
 
-def card(title: str, chart_type: str, question: str, graph_id: str) -> html.Div:
-    return html.Div(className="card", children=[
+def card(title: str, chart_type: str, question: str, graph_id: str, details: str | None = None,
+         span: int = 1) -> html.Div:
+    """One analysis card: visible question line, optional collapsible 'how to read' text."""
+    children = [
         html.Div(className="card-head", children=[
             html.H3(title),
             html.Span(chart_type, className="badge"),
         ]),
         html.P(question, className="q"),
-        dcc.Graph(id=graph_id, config=GRAPH_CONFIG),
-    ])
+    ]
+    if details:
+        children.append(html.Details(className="more", children=[
+            html.Summary("How to read this chart"),
+            html.P(details, className="details-body"),
+        ], open=False))
+    children.append(dcc.Graph(id=graph_id, config=GRAPH_CONFIG))
+    return html.Div(className=f"card span{span}", children=children)
 
 
 app.layout = html.Div(className="page", children=[
@@ -97,66 +105,72 @@ app.layout = html.Div(className="page", children=[
 
         # ---------------- question grid ----------------
         html.Div(className="grid", children=[
+            # Q1 is full width: 20 plan rows on a categorical axis need the room,
+            # and a half-width card would stretch its neighbour to a useless height.
             card("Q1 · Price rise since launch", "Dumbbell chart",
-                 "How much has each plan's price risen since launch, and who leads? "
-                 "Each row is one plan: the grey dot is its launch price, the blue dot "
-                 "its latest price, and the connecting line is the increase. Rows are "
-                 "sorted by percent growth, so the biggest riser is at the top. Hover "
-                 "shows the exact dates and both the dollar and percent change. Click a "
-                 "row to isolate that service everywhere.", "fig-q1"),
+                 "How much has each plan's price risen since launch, and who leads?",
+                 "fig-q1",
+                 details=("Each row is one plan. The grey dot is its launch price, the blue dot "
+                          "its latest price, and the connecting line is the increase. Rows are "
+                          "sorted by percent growth, so the biggest riser is at the top. Hover for "
+                          "exact dates plus the dollar and percent change; click a row to isolate "
+                          "that service everywhere."),
+                 span=2),
             card("Q2 · Do hikes cluster in time?", "Event dot plot (timeline)",
-                 "Do competitors raise prices together, or independently? Each dot is one "
-                 "price change at its exact effective date, on the row of the service that "
-                 "made it. Dot size is the size of the hike, so small steps look small. "
-                 "Clustering shows up as dots stacking vertically on the same date: four "
-                 "months contain four or more simultaneous changes. Click a dot to isolate "
-                 "that service.", "fig-q2a"),
+                 "Do competitors raise prices together, or independently?",
+                 "fig-q2a",
+                 details=("Each dot is one price change at its exact effective date, on the row of "
+                          "the service that made it. Dot size is the size of the hike. Clustering "
+                          "shows up as dots stacking vertically on the same date: four months "
+                          "contain four or more simultaneous changes. Click a dot to isolate that "
+                          "service.")),
             card("Q2 · Increases per service per year", "Heatmap",
-                 "The same clustering question asked as counts instead of dates. Rows are "
-                 "services, columns are years, and each cell counts price increases in that "
-                 "year, shaded from pale to dark. It answers what the timeline cannot: how "
-                 "many hikes happened per service per year, side by side. Dark horizontal "
-                 "bands mark a service that raises prices often; dark vertical bands mark a "
-                 "year when most of the market moved at once.", "fig-q2b"),
+                 "The same question as counts: which service hikes often, and in which years "
+                 "did the whole market move?",
+                 "fig-q2b",
+                 details=("Rows are services, columns are years, and each cell counts price "
+                          "increases, shaded from pale to dark. Dark horizontal bands mark a service "
+                          "that raises prices often; dark vertical bands mark a year when most of "
+                          "the market moved at once.")),
             card("Q3 · The price of going ad-free", "Step line chart",
-                 "How much extra does it cost to remove ads, and is that premium growing? "
-                 "For each service we take the cheapest no-ads plan minus the cheapest "
-                 "with-ads plan, every month, so the line is the ad-free premium in dollars. "
-                 "Lines are stepped because a price only changes on a specific date; a "
-                 "smooth curve would imply gradual change that never happened. Hover shows "
-                 "both underlying prices. Six of seven services show a widening gap.", "fig-q3a"),
+                 "How much extra does it cost to remove ads, and is that premium growing?",
+                 "fig-q3a",
+                 details=("For each service, the cheapest no-ads plan minus the cheapest with-ads "
+                          "plan, every month, so the line is the ad-free premium in dollars. Lines "
+                          "are stepped because a price only changes on a specific date; a smooth "
+                          "curve would imply gradual change that never happened. Six of seven "
+                          "services show a widening gap.")),
             card("Q3 · Today's ad-free premium", "Dumbbell chart",
-                 "What does the ad-free upgrade cost right now, service by service? One row "
-                 "per service at the end of the selected window: the amber dot is the "
-                 "cheapest with-ads plan, the blue dot the cheapest no-ads plan, and the "
-                 "line between them is the premium. Sorted by premium size. This is the "
-                 "same question as the chart to its left, collapsed to its latest value.",
-                 "fig-q3b"),
-            card("Q4 · Faster than inflation?", "Indexed line chart",
-                 "Have streaming prices risen faster than the general cost of living? We "
-                 "compare two lines: a chained index of all tracked plans, and US consumer "
-                 "inflation, both rebased to 100 at the start of the analysis window. "
-                 "Rebasing is what makes the comparison fair, since the two series start at "
-                 "different price levels. The vertical gap between the lines is real price "
-                 "growth. Move the window control and the rebasing point moves with it, so "
-                 "you can test the claim from any starting year instead of taking one on "
-                 "trust.", "fig-q4a"),
+                 "What does the ad-free upgrade cost right now, service by service?",
+                 "fig-q3b",
+                 details=("One row per service at the end of the selected window: the amber dot is "
+                          "the cheapest with-ads plan, the blue dot the cheapest no-ads plan, and the "
+                          "line between them is the premium. This is the chart on the left collapsed "
+                          "to its latest value.")),
+            card("Q4 · Faster than inflation?", "Diverging area chart",
+                 "Have streaming prices risen faster than the general cost of living?",
+                 "fig-q4a",
+                 details=("One line, one meaning. The chart shows streaming prices minus inflation, "
+                          "cumulatively from the start of the analysis window. At zero the two rose "
+                          "together; above zero streaming outpaced inflation; below zero it lagged. "
+                          "Move the analysis window and the counting restarts from the new date, so "
+                          "you can test whether the answer depends on when you start."),
+                 span=2),
             card("Q4 · Every plan vs inflation", "Scatter plot with reference line",
-                 "The per-plan version of the same question, with no aggregation hiding "
-                 "outliers. Each bubble is one plan: horizontal position is inflation over "
-                 "that plan's own lifetime, vertical position is its price growth over the "
-                 "same window, and bubble size is how many months that window covers. Above "
-                 "the dotted line the price outran inflation; below it, the price lost "
-                 "ground in real terms. Hover for launch and latest price and date.",
-                 "fig-q4b"),
+                 "Which individual plans beat inflation over their own lifetime?",
+                 "fig-q4b",
+                 details=("Each bubble is one plan: horizontal position is inflation over that "
+                          "plan's own lifetime, vertical position is its price growth over the same "
+                          "window, and bubble size is how many months the window covers. Above the "
+                          "dotted line the price outran inflation; below it the price lost ground in "
+                          "real terms.")),
             card("Q5 · Small steps or big jumps?", "Bubble scatter plot",
-                 "How do services raise prices: often and a little, or rarely and a lot? Each "
-                 "bubble is a single price change. Horizontal position is how many months "
-                 "passed since that plan's previous change, vertical position is the size of "
-                 "the hike in percent, and bubble size is the change in dollars. Frequent "
-                 "small increases crowd the bottom left; rare large jumps sit high and to the "
-                 "right. Bubble size separates a one-dollar rise on a cheap plan from the "
-                 "same percent rise on an expensive one.", "fig-q5"),
+                 "How do services raise prices: often and a little, or rarely and a lot?",
+                 "fig-q5",
+                 details=("Each bubble is a single price change. Horizontal position is months since "
+                          "that plan's previous change, vertical position is the hike in percent, and "
+                          "bubble size is the change in dollars. Frequent small increases crowd the "
+                          "bottom left; rare large jumps sit high and right.")),
         ]),
     ]),
 
@@ -263,7 +277,7 @@ def update_all(services, tiers, window, advanced):
             fig_hike_scatter(ev_w),
             fig_gap_lines(gap_w, DATA["service_colors"]),
             fig_gap_dumbbell(gap_w),
-            fig_index(monthly, market, w0),
+            fig_inflation_gap(monthly, market, w0),
             fig_growth_vs_inflation(summary, monthly),
             )
 

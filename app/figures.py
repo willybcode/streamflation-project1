@@ -21,7 +21,11 @@ TIER_COLORS = {"no ads": "#2A6F97", "with ads": "#E9A23B", "add-on": "#8D99AE"}
 # Fallback service palette (overridden by the source's own brand colours below).
 SERVICE_FALLBACK = px.colors.qualitative.Set2
 
-BASE_LAYOUT = dict(template="plotly_white", margin=dict(l=40, r=20, t=30, b=44), height=420)
+BASE_LAYOUT = dict(template="plotly_white", margin=dict(l=40, r=20, t=30, b=44), height=400)
+
+# One height for every chart that sits in a paired grid row, so no card is
+# stretched to match a taller neighbour (which used to leave dead space).
+CHART_H = 400
 
 
 def load_data() -> dict[str, pd.DataFrame]:
@@ -84,7 +88,7 @@ def fig_dumbbell(summary: pd.DataFrame) -> go.Figure:
                            "Tier: %{customdata[1]}<extra></extra>")))
     return _layout(fig, xaxis_title="Monthly price (USD)", yaxis_title=None,
                    yaxis=dict(categoryorder="array", categoryarray=order),
-                   height=max(360, 30 * len(df) + 90), showlegend=True)
+                   height=min(560, max(CHART_H, 26 * len(df) + 80)), showlegend=True)
 
 
 # ---------------------------------------------------------------------------
@@ -107,7 +111,7 @@ def fig_timeline(events: pd.DataFrame, service_colors: dict[str, str]) -> go.Fig
                             "%{x|%d %b %Y}: $%{customdata[2]:.2f} → $%{customdata[1]:.2f}<br>"
                             "Change: %{customdata[3]:+.2f} USD (%{customdata[4]:+.1f}%)"
                             "<extra></extra>")
-    return _layout(fig, height=380, showlegend=True)
+    return _layout(fig, height=CHART_H, showlegend=True)
 
 
 # ---------------------------------------------------------------------------
@@ -125,7 +129,7 @@ def fig_heatmap(events: pd.DataFrame) -> go.Figure:
                     labels=dict(x="Year", y="", color=""))
     fig.update_traces(hovertemplate="%{y}<br>%{x}: %{z} price increase(s)<extra></extra>")
     fig.update_layout(coloraxis_colorbar=dict(thickness=12))
-    return _layout(fig, height=380)
+    return _layout(fig, height=CHART_H)
 
 
 # ---------------------------------------------------------------------------
@@ -143,7 +147,7 @@ def fig_gap_lines(gap: pd.DataFrame, service_colors: dict[str, str]) -> go.Figur
         tr.hovertemplate = ("<b>%{fullData.name}</b><br>%{x|%b %Y}: +%{y:.2f} USD to go ad-free<br>"
                             "with ads $%{customdata[0]:.2f} → no ads $%{customdata[1]:.2f} "
                             "(+%{customdata[2]:.1f}%)<extra></extra>")
-    return _layout(fig, height=420, showlegend=True)
+    return _layout(fig, height=CHART_H, showlegend=True)
 
 
 # ---------------------------------------------------------------------------
@@ -175,29 +179,66 @@ def fig_gap_dumbbell(gap: pd.DataFrame) -> go.Figure:
                              hovertemplate="<b>%{y}</b> — no ads $%{x:.2f}<br>"
                                            "Ad-free premium: +$%{customdata[0]:.2f} "
                                            "(+%{customdata[1]:.1f}%)<extra></extra>"))
-    return _layout(fig, xaxis_title="Monthly price (USD)", height=380,
+    return _layout(fig, xaxis_title="Monthly price (USD)", height=CHART_H,
                    showlegend=True)
 
 
 # ---------------------------------------------------------------------------
 # Q4a — price index vs inflation, rebased at the window start
 # ---------------------------------------------------------------------------
-def fig_index(monthly: pd.DataFrame, market: pd.DataFrame, start: pd.Timestamp) -> go.Figure:
+def fig_inflation_gap(monthly: pd.DataFrame, market: pd.DataFrame, start: pd.Timestamp) -> go.Figure:
+    """Cumulative gap between streaming prices and inflation, in percentage points.
+
+    Both series are rebased to the window start and then divided, so a single
+    line carries the whole answer: 0 = prices rose exactly with inflation,
+    above 0 = streaming outpaced it, below 0 = streaming lagged it.
+    """
+    s = market[market["month"] >= start]
+    if s.empty or len(s) < 2:
+        return empty_fig("Window is too short - move the analysis window")
+
+    stream_idx = s["market_index"] / float(s["market_index"].iloc[0]) * 100
+    cpi_idx = s["cpi_index"] / float(s["cpi_index"].iloc[0]) * 100
+    gap = (stream_idx / cpi_idx - 1) * 100
+    last = float(gap.iloc[-1])
+
+    template = (
+        "<b>%{x|%b %Y}</b><br>"
+        "Streaming prices %{customdata[2]}<br>"
+        "%{y:+.1f} percentage points versus inflation<br>"
+        "Streaming index %{customdata[0]:.1f} vs inflation %{customdata[1]:.1f} "
+        "(window start = 100)<extra></extra>"
+    )
+
     fig = go.Figure()
-    for col, name, style in (("market_index", "Tracked streaming prices (chained index)",
-                              dict(color="#C1121F", width=3)),
-                             ("cpi_index", "US inflation (CPI-U)",
-                              dict(color="#6C757D", width=2.5, dash="dash"))):
-        s = market[market["month"] >= start]
-        if s.empty:
-            return empty_fig("Window starts after the data ends")
-        base = float(s[col].iloc[0])
-        fig.add_trace(go.Scatter(x=s["month"], y=s[col] / base * 100, mode="lines",
-                                 name=name, line=style,
-                                 hovertemplate="%{x|%b %Y}: %{y:.1f}<extra>" + name + "</extra>"))
-    fig.add_hline(y=100, line=dict(color="#ADB5BD", width=1))
-    return _layout(fig, yaxis_title="Index (window start = 100)",
-                   height=420, showlegend=True)
+    fig.add_trace(go.Scatter(
+        x=s["month"],
+        y=gap,
+        mode="lines",
+        name="Streaming minus inflation",
+        line=dict(color="#C1121F", width=3),
+        fill="tozeroy",
+        fillcolor="rgba(193,18,31,0.12)",
+        customdata=np.stack([stream_idx.round(1), cpi_idx.round(1),
+                             np.where(gap >= 0, "ahead of inflation", "behind inflation")], axis=-1),
+        hovertemplate=template,
+    ))
+    fig.add_hline(y=0, line=dict(color="#495057", width=1.5))
+    fig.add_annotation(
+        x=s["month"].iloc[-1], y=last,
+        text=f"<b>{abs(last):.1f} pts {'ahead' if last >= 0 else 'behind'}</b>",
+        showarrow=False, xanchor="right",
+        yanchor="bottom" if last >= 0 else "top",
+        font=dict(size=11, color="#C1121F"),
+    )
+    fig.add_annotation(
+        x=s["month"].iloc[0], y=0,
+        text="prices track inflation exactly",
+        showarrow=False, xanchor="left", yanchor="bottom",
+        font=dict(size=10, color="#868E96"),
+    )
+    return _layout(fig, yaxis_title="Streaming prices minus inflation (percentage points)",
+                   height=CHART_H, showlegend=False)
 
 
 # ---------------------------------------------------------------------------
@@ -229,7 +270,7 @@ def fig_growth_vs_inflation(summary: pd.DataFrame, monthly: pd.DataFrame) -> go.
                             "$%{customdata[1]:.2f} (%{customdata[3]}) → "
                             "$%{customdata[2]:.2f} (%{customdata[4]})<extra></extra>")
     return _layout(fig, xaxis_title="Inflation since launch (%)",
-                   yaxis_title="Price growth since launch (%)", height=420, showlegend=True)
+                   yaxis_title="Price growth since launch (%)", height=CHART_H, showlegend=True)
 
 
 # ---------------------------------------------------------------------------
@@ -253,7 +294,7 @@ def fig_hike_scatter(events: pd.DataFrame) -> go.Figure:
                             "after %{x:.1f} months<extra></extra>")
     fig.add_hline(y=0, line=dict(color="#ADB5BD", width=1))
     return _layout(fig, xaxis_title="Months since previous change",
-                   yaxis_title="Size of change (%)", height=420, showlegend=True)
+                   yaxis_title="Size of change (%)", height=CHART_H, showlegend=True)
 
 
 # ---------------------------------------------------------------------------
@@ -286,4 +327,4 @@ def fig_calculator(monthly: pd.DataFrame, services: list[str], tier_mode: str,
                          name="Latest month breakdown", yaxis="y2", opacity=0.85,
                          hovertemplate="%{x}: $%{y:.2f} / month<extra></extra>"))
     fig.update_layout(yaxis2=dict(overlaying="y", side="right", visible=False, showgrid=False))
-    return _layout(fig, yaxis_title="USD per month", height=420)
+    return _layout(fig, yaxis_title="USD per month", height=CHART_H)
