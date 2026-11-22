@@ -12,9 +12,9 @@ import dash
 from dash import Input, Output, State, callback, dcc, html, no_update
 import pandas as pd
 
-from figures import (TIER_COLORS, apply_theme, fig_calculator, fig_dumbbell, fig_gap_dumbbell,
-                     fig_gap_lines, fig_growth_vs_inflation, fig_heatmap, fig_hike_scatter,
-                     fig_timeline, fig_yoy_inflation, load_data)
+from figures import (TIER_COLORS, apply_theme, empty_fig, fig_calculator, fig_dumbbell,
+                     fig_gap_dumbbell, fig_gap_lines, fig_growth_vs_inflation, fig_heatmap,
+                     fig_hike_scatter, fig_timeline, fig_yoy_inflation, load_data)
 
 DATA = load_data()
 MONTHS = pd.date_range("2010-06-01", "2026-09-01", freq="MS")
@@ -75,36 +75,71 @@ app.layout = html.Div(className="page", children=[
     html.Div(className="layout", children=[
         # ---------------- control rail ----------------
         html.Div(className="rail", children=[
-            html.H3("Controls"),
-            html.Label("Services (searchable; click any chart point to isolate)"),
-            dcc.Dropdown(id="services", options=ALL_SERVICES, value=ALL_SERVICES,
-                         multi=True, placeholder="All services"),
-            html.Label("Plan tier"),
-            dcc.Checklist(id="tiers",
-                          options=[{"label": f"  {t}", "value": t} for t in ALL_TIERS],
-                          value=ALL_TIERS, inline=True,
-                          className="tier-checks"),
-            html.Label("Analysis window"),
-            dcc.RangeSlider(id="window", min=0, max=len(MONTHS) - 1, step=1,
-                            value=[0, len(MONTHS) - 1],
-                            marks={i: str(y) for i, y in
-                                   enumerate(MONTHS.year) if y % 3 == 0 and (i == 0 or y != MONTHS.year[i - 1])},
-                            tooltip={"placement": "bottom", "always_visible": False}),
-            html.Div(id="window-label", className="muted"),
-            dcc.Checklist(id="advanced",
-                          options=[{"label": " Include discontinued & add-on plans",
-                                    "value": "y"}],
-                          value=["y"]),
-            html.Button("Reset filters", id="reset", n_clicks=0, className="btn"),
-            html.Hr(),
-            html.Div([
-                html.Strong("How to read this dashboard"),
-                html.Ul([
-                    html.Li("Q1–Q5 answer the five analysis questions (marked on each card)."),
-                    html.Li("Hover anywhere for details; scroll-zoom on any chart."),
-                    html.Li("Click a plan row (Q1) or a dot (Q2) to isolate that service."),
-                    html.Li("The window control rebases the inflation chart at its start."),
-                ], className="muted"),
+            # ---- services -------------------------------------------------
+            html.Div(className="field", children=[
+                html.Div(className="field-head", children=[
+                    html.Label("Services", htmlFor="services"),
+                    html.Span(id="services-count", className="field-count"),
+                ]),
+                dcc.Dropdown(id="services", options=ALL_SERVICES, value=ALL_SERVICES,
+                             multi=True, placeholder="All services"),
+                html.Div(className="quick", children=[
+                    html.Button("All", id="svc-all", n_clicks=0, className="chip-btn"),
+                    html.Button("None", id="svc-none", n_clicks=0, className="chip-btn"),
+                ]),
+            ]),
+
+            # ---- tier -----------------------------------------------------
+            html.Div(className="field", children=[
+                html.Label("Plan tier"),
+                dcc.Checklist(
+                    id="tiers",
+                    options=[{"label": t, "value": t} for t in ALL_TIERS],
+                    value=ALL_TIERS, className="tier-chips"),
+                html.Div("Colours match the charts", className="field-hint"),
+            ]),
+
+            # ---- window ---------------------------------------------------
+            html.Div(className="field", children=[
+                html.Div(className="field-head", children=[
+                    html.Label("Analysis window"),
+                    html.Span(id="window-label", className="field-count"),
+                ]),
+                dcc.RangeSlider(
+                    id="window", min=0, max=len(MONTHS) - 1, step=1,
+                    value=[0, len(MONTHS) - 1],
+                    marks={i: str(y) for i, y in enumerate(MONTHS.year)
+                           if y % 5 == 0 and (i == 0 or y != MONTHS.year[i - 1])},
+                    tooltip={"placement": "bottom", "always_visible": False},
+                    className="window-slider"),
+                html.Div(className="quick", children=[
+                    html.Button("2010–2026", id="win-all", n_clicks=0, className="chip-btn"),
+                    html.Button("Since 2020", id="win-2020", n_clicks=0, className="chip-btn"),
+                    html.Button("Since 2022", id="win-2022", n_clicks=0, className="chip-btn"),
+                ]),
+            ]),
+
+            # ---- options --------------------------------------------------
+            html.Div(className="field", children=[
+                dcc.Checklist(
+                    id="advanced",
+                    options=[{"label": "Include discontinued & add-on plans",
+                              "value": "y"}],
+                    value=["y"], className="switch-row"),
+            ]),
+
+            html.Button("Reset all filters", id="reset", n_clicks=0, className="btn btn-wide"),
+
+            html.Div(className="rail-help", children=[
+                html.Details(children=[
+                    html.Summary("How to use this dashboard"),
+                    html.Ul([
+                        html.Li("Q1–Q5 answer the five analysis questions, marked on each card."),
+                        html.Li("Hover any mark for exact values; scroll to zoom."),
+                        html.Li("Click a row in Q1 or a dot in Q2 to isolate that service."),
+                        html.Li("Move the window to re-test any period."),
+                    ]),
+                ], open=False),
             ]),
         ]),
 
@@ -289,7 +324,8 @@ def update_all(services, tiers, window, advanced, theme):
         fig_hike_scatter(ev_w, dark=dark),
         fig_gap_lines(gap_w, DATA["service_colors"], cols=4, dark=dark),
         fig_gap_dumbbell(gap_w, dark=dark),
-        fig_yoy_inflation(DATA["yoy"], dark=dark),
+        fig_yoy_inflation(DATA["yoy"], dark=dark) if tiers else
+        empty_fig("Select at least one plan tier"),
         fig_growth_vs_inflation(summary, monthly, dark=dark),
     ]
     return (kpi1, kpi2, kpi3, kpi4,
@@ -334,6 +370,8 @@ def update_calc(services, mode, window, theme):
     w0, w1 = MONTHS[window[0]], MONTHS[window[1]]
     monthly = DATA["monthly"]
     monthly = monthly[(monthly["month"] >= w0) & (monthly["month"] <= w1)]
+    if not services:
+        return "–", "–", "–", apply_theme(empty_fig("Tick at least one service"), dark)
     fig = apply_theme(fig_calculator(monthly, services, mode, DATA["service_colors"], dark=dark), dark)
 
     # KPI numbers recomputed with the same rules as fig_calculator
@@ -351,6 +389,52 @@ def update_calc(services, mode, window, theme):
     k3 = f"+${jumps.max():.2f} ({biggest:%b %Y})" if biggest is not None else "no jumps in window"
     delta = last - first
     return f"${last:.2f}", f"{'+' if delta >= 0 else '−'}${abs(delta):.2f}", k3, fig
+
+
+# ---------------------------------------------------------------------------
+# Control rail: quick actions + live counters
+# ---------------------------------------------------------------------------
+def _month_index(year: int, month: int = 1) -> int:
+    """Index of the first month on/after year-month, clamped to the data range."""
+    after = MONTHS[MONTHS >= pd.Timestamp(year=year, month=month, day=1)]
+    if len(after) == 0:
+        return len(MONTHS) - 1
+    return int(MONTHS.get_loc(after[0]))
+
+
+@callback(
+    Output("services", "value", allow_duplicate=True),
+    Input("svc-all", "n_clicks"), Input("svc-none", "n_clicks"),
+    prevent_initial_call=True,
+)
+def quick_services(all_clicks, none_clicks):
+    ctx = dash.callback_context
+    if not ctx.triggered:
+        return no_update
+    return ALL_SERVICES if ctx.triggered_id == "svc-all" else []
+
+
+@callback(
+    Output("window", "value", allow_duplicate=True),
+    Input("win-all", "n_clicks"), Input("win-2020", "n_clicks"), Input("win-2022", "n_clicks"),
+    prevent_initial_call=True,
+)
+def quick_window(all_clicks, y2020, y2022):
+    ctx = dash.callback_context
+    if not ctx.triggered:
+        return no_update
+    last = len(MONTHS) - 1
+    return {
+        "win-all": [0, last],
+        "win-2020": [_month_index(2020), last],
+        "win-2022": [_month_index(2022), last],
+    }[ctx.triggered_id]
+
+
+@callback(Output("services-count", "children"), Input("services", "value"))
+def services_count(values):
+    n = len(values or [])
+    return f"{n}/{len(ALL_SERVICES)}"
 
 
 # ---------------------------------------------------------------------------
