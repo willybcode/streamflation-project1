@@ -28,6 +28,58 @@ BASE_LAYOUT = dict(template="plotly_white", margin=dict(l=40, r=20, t=30, b=44),
 # stretched to match a taller neighbour (which used to leave dead space).
 CHART_H = 400
 
+# Theme-dependent palettes. Colours that carry meaning (tier palette, service
+# brand colours) stay identical in both themes, so the encoding never changes;
+# only paper, text and gridline colours are swapped.
+THEME = {
+    "light": dict(
+        template="plotly_white",
+        paper="#ffffff", plot="#ffffff",
+        text="#212529", text_dim="#495057", muted="#6c757d",
+        grid="#e9ecef", axis="#ced4da", legend_bg="rgba(255,255,255,0.9)",
+    ),
+    "dark": dict(
+        template="plotly_dark",
+        paper="#1a1f27", plot="#1a1f27",
+        text="#e6edf3", text_dim="#b7c3d0", muted="#8b98a8",
+        grid="#2b3442", axis="#3b4657", legend_bg="rgba(26,31,39,0.9)",
+    ),
+}
+
+
+def apply_theme(fig: go.Figure, dark: bool = False) -> go.Figure:
+    """Recolour a finished figure for the active theme.
+
+    Applied as a post-process in the callbacks, so each figure builder stays
+    theme-agnostic and its signature does not change.
+    """
+    t = THEME["dark" if dark else "light"]
+
+    fig.update_layout(
+        template=t["template"],
+        paper_bgcolor=t["paper"],
+        plot_bgcolor=t["plot"],
+        font=dict(color=t["text"]),
+        title=dict(font=dict(color=t["text"])),
+        legend=dict(bgcolor=t["legend_bg"], font=dict(color=t["text_dim"])),
+        hoverlabel=dict(bgcolor=t["paper"], bordercolor=t["axis"],
+                        font=dict(color=t["text"])),
+    )
+    fig.update_xaxes(gridcolor=t["grid"], zerolinecolor=t["axis"],
+                     linecolor=t["axis"], tickfont=dict(color=t["text_dim"]),
+                     title_font=dict(color=t["text_dim"]))
+    fig.update_yaxes(gridcolor=t["grid"], zerolinecolor=t["axis"],
+                     linecolor=t["axis"], tickfont=dict(color=t["text_dim"]),
+                     title_font=dict(color=t["text_dim"]))
+
+    # data labels written by imshow/text traces, and subplot titles
+    for tr in fig.data:
+        if getattr(tr, "textfont", None) is not None:
+            tr.textfont = dict(color=t["text"])
+    if fig.layout.annotations:
+        fig.update_annotations(font_color=t["text"])
+    return fig
+
 
 def load_data() -> dict[str, pd.DataFrame]:
     """Load all processed tables once at app start."""

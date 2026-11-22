@@ -12,7 +12,7 @@ import dash
 from dash import Input, Output, State, callback, dcc, html, no_update
 import pandas as pd
 
-from figures import (TIER_COLORS, fig_calculator, fig_dumbbell, fig_gap_dumbbell,
+from figures import (TIER_COLORS, apply_theme, fig_calculator, fig_dumbbell, fig_gap_dumbbell,
                      fig_gap_lines, fig_growth_vs_inflation, fig_heatmap, fig_hike_scatter,
                      fig_timeline, fig_yoy_inflation, load_data)
 
@@ -47,6 +47,8 @@ def card(title: str, chart_type: str, question: str, graph_id: str, details: str
 
 
 app.layout = html.Div(className="page", children=[
+    dcc.Store(id="theme-store", data="light", storage_type="local"),
+    dcc.Store(id="theme-class", data="light"),
     # ---------------- header ----------------
     html.Div(className="header", children=[
         html.Div([
@@ -65,6 +67,9 @@ app.layout = html.Div(className="page", children=[
             html.Div([html.Div(id="kpi4", className="kpi-v", children="–"),
                       html.Div("US inflation, same window", className="kpi-l")]),
         ]),
+        html.Button(id="theme-toggle", className="theme-toggle", n_clicks=0,
+                    children=[html.Span(className="dot"),
+                              html.Span("Dark mode", id="theme-toggle-label")]),
     ]),
 
     html.Div(className="layout", children=[
@@ -252,8 +257,10 @@ def filtered(services, tiers, advanced, window):
     Output("fig-q4a", "figure"), Output("fig-q4b", "figure"),
     Input("services", "value"), Input("tiers", "value"),
     Input("window", "value"), Input("advanced", "value"),
+    Input("theme-store", "data"),
 )
-def update_all(services, tiers, window, advanced):
+def update_all(services, tiers, window, advanced, theme):
+    dark = theme == "dark"
     services = services or []
     tiers = tiers or []
     events, monthly, summary, gap, w0, w1 = filtered(services, tiers, advanced, window)
@@ -275,17 +282,19 @@ def update_all(services, tiers, window, advanced):
     gap_w = gap[gap["service_name"].isin(services)]
     gap_w = gap_w[(gap_w["month"] >= w0) & (gap_w["month"] <= w1)]
 
+    figs = [
+        fig_dumbbell(summary),
+        fig_timeline(ev_w, DATA["service_colors"]),
+        fig_heatmap(ev_w),
+        fig_hike_scatter(ev_w),
+        fig_gap_lines(gap_w, DATA["service_colors"], cols=4),
+        fig_gap_dumbbell(gap_w),
+        fig_yoy_inflation(DATA["yoy"]),
+        fig_growth_vs_inflation(summary, monthly),
+    ]
     return (kpi1, kpi2, kpi3, kpi4,
             f"{w0:%b %Y} – {w1:%b %Y}",
-            fig_dumbbell(summary),
-            fig_timeline(ev_w, DATA["service_colors"]),
-            fig_heatmap(ev_w),
-            fig_hike_scatter(ev_w),
-            fig_gap_lines(gap_w, DATA["service_colors"], cols=4),
-            fig_gap_dumbbell(gap_w),
-            fig_yoy_inflation(DATA["yoy"]),
-            fig_growth_vs_inflation(summary, monthly),
-            )
+            *[apply_theme(f, dark) for f in figs])
 
 
 # ---------------------------------------------------------------------------
@@ -317,13 +326,15 @@ def isolate_service(q1_click, q2_click):
     Output("ckpi1", "children"), Output("ckpi2", "children"), Output("ckpi3", "children"),
     Output("fig-calc", "figure"),
     Input("calc-services", "value"), Input("calc-mode", "value"), Input("window", "value"),
+    Input("theme-store", "data"),
 )
-def update_calc(services, mode, window):
+def update_calc(services, mode, window, theme):
+    dark = theme == "dark"
     services = services or []
     w0, w1 = MONTHS[window[0]], MONTHS[window[1]]
     monthly = DATA["monthly"]
     monthly = monthly[(monthly["month"] >= w0) & (monthly["month"] <= w1)]
-    fig = fig_calculator(monthly, services, mode, DATA["service_colors"])
+    fig = apply_theme(fig_calculator(monthly, services, mode, DATA["service_colors"]), dark)
 
     # KPI numbers recomputed with the same rules as fig_calculator
     mode_map = {"Cheapest ad-free": "no ads", "Cheapest with ads": "with ads"}
@@ -340,6 +351,47 @@ def update_calc(services, mode, window):
     k3 = f"+${jumps.max():.2f} ({biggest:%b %Y})" if biggest is not None else "no jumps in window"
     delta = last - first
     return f"${last:.2f}", f"{'+' if delta >= 0 else '−'}${abs(delta):.2f}", k3, fig
+
+
+# ---------------------------------------------------------------------------
+# Theme toggle — flips the store, swaps the body class and relabels the button
+# ---------------------------------------------------------------------------
+app.clientside_callback(
+    """
+    function(n_clicks, current) {
+        if (!n_clicks) { return [window.dash_clientside.no_update,
+                                 window.dash_clientside.no_update,
+                                 window.dash_clientside.no_update]; }
+        const next = (current === "dark") ? "light" : "dark";
+        document.body.classList.toggle("dark", next === "dark");
+        return [next, next, next === "dark" ? "Light mode" : "Dark mode"];
+    }
+    """,
+    Output("theme-store", "data", allow_duplicate=True),
+    Output("theme-class", "data", allow_duplicate=True),
+    Output("theme-toggle-label", "children"),
+    Input("theme-toggle", "n_clicks"),
+    State("theme-store", "data"),
+    prevent_initial_call=True,
+)
+
+
+# ---------------------------------------------------------------------------
+# Apply the saved theme on first load (the toggle sets the class on click, but a
+# page reload starts with a bare <body>, so the store value has to be re-applied)
+# ---------------------------------------------------------------------------
+app.clientside_callback(
+    """
+    function(theme) {
+        if (!theme) { return window.dash_clientside.no_update; }
+        document.body.classList.toggle("dark", theme === "dark");
+        return theme === "dark" ? "Light mode" : "Dark mode";
+    }
+    """,
+    Output("theme-toggle-label", "children", allow_duplicate=True),
+    Input("theme-store", "data"),
+    prevent_initial_call="initial_duplicate",
+)
 
 
 # ---------------------------------------------------------------------------

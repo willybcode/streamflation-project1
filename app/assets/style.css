@@ -1,10 +1,41 @@
-/* Streamflation dashboard — layout & typography */
+/* Streamflation dashboard — layout, typography, light/dark themes */
+:root {
+  --bg: #f4f6f8;
+  --surface: #ffffff;
+  --surface-2: #f8fafb;
+  --border: #e2e6ea;
+  --border-strong: #dee2e6;
+  --text: #212529;
+  --text-dim: #495057;
+  --text-muted: #6c757d;
+  --accent: #2A6F97;
+  --accent-soft: #EAF3F8;
+  --accent-border: #CFE2EE;
+  --btn-bg: #ffffff;
+}
+
+body.dark {
+  --bg: #12161c;
+  --surface: #1a1f27;
+  --surface-2: #212832;
+  --border: #2b3442;
+  --border-strong: #333d4d;
+  --text: #e6edf3;
+  --text-dim: #b7c3d0;
+  --text-muted: #8b98a8;
+  --accent: #6BB6E0;
+  --accent-soft: #1b2937;
+  --accent-border: #2c4457;
+  --btn-bg: #212832;
+}
+
 * { box-sizing: border-box; }
 body {
   margin: 0;
   font-family: "Segoe UI", "Inter", system-ui, sans-serif;
-  background: #f4f6f8;
-  color: #212529;
+  background: var(--bg);
+  color: var(--text);
+  transition: background 0.2s ease, color 0.2s ease;
 }
 .page { max-width: 1500px; margin: 0 auto; padding: 20px 28px 40px; }
 
@@ -14,34 +45,59 @@ body {
   gap: 24px; flex-wrap: wrap; margin-bottom: 18px;
 }
 .header h1 { margin: 0 0 4px; font-size: 30px; letter-spacing: -0.5px; }
-.subtitle { margin: 0; max-width: 560px; color: #495057; }
+.subtitle { margin: 0; max-width: 560px; color: var(--text-dim); }
+
+/* theme toggle */
+.theme-toggle {
+  display: inline-flex; align-items: center; gap: 7px;
+  border: 1px solid var(--border); background: var(--surface);
+  color: var(--text-dim); border-radius: 999px; padding: 7px 14px;
+  font-size: 12.5px; font-weight: 600; cursor: pointer;
+  font-family: inherit; white-space: nowrap;
+}
+.theme-toggle:hover { border-color: var(--accent); color: var(--accent); }
+.theme-toggle .dot {
+  width: 9px; height: 9px; border-radius: 50%;
+  background: var(--accent); flex: 0 0 auto;
+}
 
 /* KPI strip */
 .kpis { display: flex; gap: 12px; flex-wrap: wrap; }
 .kpis > div {
-  background: #fff; border: 1px solid #e2e6ea; border-radius: 10px;
-  padding: 10px 16px; min-width: 130px; text-align: center;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 10px 16px; min-width: 130px; text-align: center;
 }
-.kpi-v { font-size: 22px; font-weight: 650; color: #2A6F97; }
-.kpi-l { font-size: 11.5px; color: #6c757d; text-transform: uppercase; letter-spacing: 0.4px; }
+.kpi-v { font-size: 22px; font-weight: 650; color: var(--accent); }
+.kpi-l {
+  font-size: 11.5px; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.4px;
+}
 
 /* layout: control rail + question grid */
 .layout { display: flex; gap: 18px; align-items: flex-start; }
 .rail {
   flex: 0 0 250px; position: sticky; top: 12px;
-  background: #fff; border: 1px solid #e2e6ea; border-radius: 12px; padding: 16px 18px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 16px 18px;
 }
 .rail h3 { margin: 0 0 12px; }
-.rail label { display: block; font-size: 12px; font-weight: 600; margin: 14px 0 6px; color: #495057; }
+.rail label {
+  display: block; font-size: 12px; font-weight: 600;
+  margin: 14px 0 6px; color: var(--text-dim);
+}
 .rail .Select-control { border-radius: 8px; }
-.tier-checks label { margin: 4px 12px 4px 0; font-size: 13px; font-weight: 500; }
-.muted { color: #6c757d; font-size: 12px; }
+.tier-checks label {
+  margin: 4px 12px 4px 0; font-size: 13px; font-weight: 500;
+}
+.muted { color: var(--text-muted); font-size: 12px; }
 .muted ul { padding-left: 16px; margin: 6px 0; }
 .btn {
-  margin-top: 16px; padding: 8px 14px; border: 1px solid #2A6F97; border-radius: 8px;
-  background: #fff; color: #2A6F97; cursor: pointer; font-weight: 600;
+  margin-top: 16px; padding: 8px 14px;
+  border: 1px solid var(--accent); border-radius: 8px;
+  background: var(--btn-bg); color: var(--accent);
+  cursor: pointer; font-weight: 600; font-family: inherit;
 }
-.btn:hover { background: #2A6F97; color: #fff; }
+.btn:hover { background: var(--accent); color: var(--surface); }
 
 /* question grid */
 .grid {
@@ -50,8 +106,9 @@ body {
 /* full-width cards (dense categorical axes need the room) */
 .grid > .span2 { grid-column: 1 / -1; }
 .card {
-  background: #fff; border: 1px solid #e2e6ea; border-radius: 12px;
-  padding: 14px 18px 6px; min-width: 0; display: flex; flex-direction: column;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 14px 18px 6px;
+  min-width: 0; display: flex; flex-direction: column;
 }
 .card h3 { margin: 2px 0 2px; font-size: 15.5px; }
 .card-head {
@@ -60,28 +117,30 @@ body {
 }
 .badge {
   font-size: 10.5px; font-weight: 600; letter-spacing: 0.3px;
-  color: #2A6F97; background: #EAF3F8; border: 1px solid #CFE2EE;
+  color: var(--accent); background: var(--accent-soft);
+  border: 1px solid var(--accent-border);
   border-radius: 999px; padding: 3px 9px; white-space: nowrap;
   text-transform: uppercase;
 }
 .card .q {
-  margin: 4px 0 2px; font-size: 12.5px; color: #6c757d;
+  margin: 4px 0 2px; font-size: 12.5px; color: var(--text-muted);
   line-height: 1.5; min-height: 34px;
 }
 
 /* collapsible "how to read this chart" — keeps the card compact by default */
 .more { margin: 0 0 6px; }
 .more summary {
-  cursor: pointer; font-size: 11.5px; font-weight: 600; color: #2A6F97;
-  padding: 2px 0; list-style: none; user-select: none;
+  cursor: pointer; font-size: 11.5px; font-weight: 600;
+  color: var(--accent); padding: 2px 0; list-style: none; user-select: none;
 }
 .more summary::-webkit-details-marker { display: none; }
 .more summary::before { content: "+ "; font-weight: 700; }
 .more[open] summary::before { content: "− "; }
 .more summary:hover { text-decoration: underline; }
 .details-body {
-  margin: 4px 0 0; font-size: 12.5px; color: #6c757d; line-height: 1.5;
-  border-left: 2px solid #CFE2EE; padding-left: 10px;
+  margin: 4px 0 0; font-size: 12.5px; color: var(--text-muted);
+  line-height: 1.5; border-left: 2px solid var(--accent-border);
+  padding-left: 10px;
 }
 
 /* calculator */
@@ -89,9 +148,71 @@ body {
 .calc-controls { display: flex; gap: 30px; flex-wrap: wrap; margin-bottom: 8px; }
 
 footer {
-  margin-top: 26px; padding-top: 12px; border-top: 1px solid #dee2e6;
-  font-size: 11.5px; color: #6c757d; max-width: 1100px;
+  margin-top: 26px; padding-top: 12px;
+  border-top: 1px solid var(--border-strong);
+  font-size: 11.5px; color: var(--text-muted); max-width: 1100px;
 }
+
+/* Dash 4 dropdown (dash-dropdown-* classes), dark theme */
+body.dark .dash-dropdown,
+body.dark .dash-dropdown-wrapper,
+body.dark .dash-dropdown-trigger,
+body.dark .dash-dropdown-value,
+body.dark .dash-dropdown-value-item {
+  background: var(--surface-2) !important;
+  color: var(--text) !important;
+  border-color: var(--border) !important;
+}
+body.dark .dash-dropdown-value-count {
+  background: var(--accent-soft) !important;
+  color: var(--text-dim) !important;
+}
+body.dark .dash-dropdown-clear { color: var(--text-muted) !important; }
+body.dark .dash-dropdown-content,
+body.dark .dash-dropdown-menu,
+body.dark .dash-dropdown-options,
+body.dark .dash-dropdown-option,
+body.dark .dash-dropdown-search-container,
+body.dark .dash-dropdown-search {
+  background: var(--surface-2) !important;
+  color: var(--text) !important;
+  border-color: var(--border) !important;
+}
+body.dark .dash-dropdown-option:hover,
+body.dark .dash-dropdown-option[aria-selected="true"] {
+  background: var(--accent-soft) !important;
+}
+
+/* Dash 4 dropdown popup: rendered position:fixed in a portal, transparent by default */
+body.dark .dash-options-list,
+body.dark .dash-options-list-option,
+body.dark .dash-options-list-option-text,
+body.dark .dash-dropdown-search-container,
+body.dark .dash-dropdown-search {
+  background: var(--surface-2) !important;
+  color: var(--text) !important;
+  border-color: var(--border) !important;
+}
+body.dark .dash-options-list-option:hover,
+body.dark .dash-options-list-option[aria-selected="true"] {
+  background: var(--accent-soft) !important;
+}
+/* the fixed portal wrapper needs the surface colour, not transparency */
+body.dark .dash-dropdown-wrapper > div[style*="z-index"] { background: transparent !important; }
+body.dark div[role="listbox"] {
+  background: var(--surface-2) !important;
+  color: var(--text) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 8px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.55);
+}
+
+/* range slider */
+body.dark .rc-slider-rail { background: var(--border); }
+body.dark .rc-slider-mark-text { color: var(--text-muted); }
+
+/* collapsed / open <details> must not inherit a white background */
+details.more { background: transparent; }
 
 @media (max-width: 1080px) {
   .layout { flex-direction: column; }

@@ -48,6 +48,8 @@ service port to container port **8050**.
 | Q5 | Do services raise prices in small steps or big jumps? | Bubble scatter: hike size vs months since previous change | hover, tier filter |
 | + | *My subscriptions* calculator | Total monthly cost of a chosen bundle over time, with breakdown | tick services, pick tier mode |
 
+A **light/dark theme toggle** sits in the header; the choice is saved in the browser and restored on reload, and every chart is recoloured (tier and service colours stay identical so the encoding never changes).
+
 The dashboard deliberately uses **dumbbells, event timelines, heatmaps,
 stepped/gap lines, indexed lines and bubble scatter** rather than plain
 bar/line/pie charts; each idiom was chosen for its task (see below).
