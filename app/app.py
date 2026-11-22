@@ -284,13 +284,13 @@ def update_all(services, tiers, window, advanced, theme):
 
     figs = [
         fig_dumbbell(summary),
-        fig_timeline(ev_w, DATA["service_colors"]),
+        fig_timeline(ev_w, DATA["service_colors"], dark=dark),
         fig_heatmap(ev_w),
-        fig_hike_scatter(ev_w),
-        fig_gap_lines(gap_w, DATA["service_colors"], cols=4),
-        fig_gap_dumbbell(gap_w),
-        fig_yoy_inflation(DATA["yoy"]),
-        fig_growth_vs_inflation(summary, monthly),
+        fig_hike_scatter(ev_w, dark=dark),
+        fig_gap_lines(gap_w, DATA["service_colors"], cols=4, dark=dark),
+        fig_gap_dumbbell(gap_w, dark=dark),
+        fig_yoy_inflation(DATA["yoy"], dark=dark),
+        fig_growth_vs_inflation(summary, monthly, dark=dark),
     ]
     return (kpi1, kpi2, kpi3, kpi4,
             f"{w0:%b %Y} – {w1:%b %Y}",
@@ -334,7 +334,7 @@ def update_calc(services, mode, window, theme):
     w0, w1 = MONTHS[window[0]], MONTHS[window[1]]
     monthly = DATA["monthly"]
     monthly = monthly[(monthly["month"] >= w0) & (monthly["month"] <= w1)]
-    fig = apply_theme(fig_calculator(monthly, services, mode, DATA["service_colors"]), dark)
+    fig = apply_theme(fig_calculator(monthly, services, mode, DATA["service_colors"], dark=dark), dark)
 
     # KPI numbers recomputed with the same rules as fig_calculator
     mode_map = {"Cheapest ad-free": "no ads", "Cheapest with ads": "with ads"}
