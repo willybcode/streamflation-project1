@@ -95,6 +95,66 @@ body {
 .field-count:empty { display: none; }
 .field-hint { font-size: 10.5px; color: var(--text-muted); margin-top: 6px; }
 
+/* Dash wraps every Checklist inside .dash-options-list, which carries its own
+   border+background. That is the stray box around "Plan tier" and the checkbox
+   row. The chips/labels provide their own styling, so drop the wrapper chrome. */
+.rail .dash-options-list {
+  border-width: 0 !important;
+  border-style: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+}
+.rail .dash-options-list-option,
+.rail .dash-options-list-option-text {
+  border-width: 0 !important;
+  border-style: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+}
+/* tier chips style their label; the option wrapper must not add a box */
+.tier-chips .dash-options-list-option,
+.switch-row .dash-options-list-option { display: contents; }
+
+/* the native range inputs Dash renders are invisible but paint a white track */
+/* Dash overlays two native range inputs (one per handle) that paint a white
+   track behind the styled slider. Hide them entirely. */
+.window-slider .dash-input-container,
+.window-slider input[type="range"] {
+  display: none !important;
+}
+
+/* Dash ships default component chrome (light borders, white fills) that shows
+   up as stray boxes around checklists and the dropdown in dark mode. Strip it. */
+/* NB: use border-width:0 rather than `border: none`, because `none` leaves the
+   computed width at `medium` (1px) and later !important rules then re-show it. */
+.rail .dash-checklist,
+.rail .dash-checklist-group,
+.rail .dash-dropdown-content,
+.rail .dash-dropdown-menu {
+  background: transparent !important;
+  border-width: 0 !important;
+  border-style: none !important;
+  box-shadow: none !important;
+}
+.rail .dash-dropdown,
+.rail .dash-dropdown-wrapper {
+  background: var(--surface-2) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 8px !important;
+  box-shadow: none !important;
+  padding: 4px 6px;
+}
+.rail .dash-dropdown:hover { border-color: var(--accent) !important; }
+/* the vertical scrollbar inside the multi-select pill area */
+.rail .dash-dropdown-value::-webkit-scrollbar { width: 8px; }
+.rail .dash-dropdown-value::-webkit-scrollbar-track { background: transparent; }
+.rail .dash-dropdown-value::-webkit-scrollbar-thumb {
+  background: var(--border-strong); border-radius: 4px;
+}
+.rail .dash-dropdown-value::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+.rail .dash-dropdown-value { scrollbar-width: thin; scrollbar-color: var(--border-strong) transparent; }
+
 /* Dash 4 multi-select must wrap inside the rail instead of overflowing it */
 .rail .dash-dropdown,
 .rail .dash-dropdown-wrapper,
@@ -102,6 +162,7 @@ body {
 .rail .dash-dropdown-value {
   display: flex; flex-wrap: wrap; gap: 3px;
   max-height: 74px; overflow-y: auto; min-width: 0;
+  background: transparent !important; border: none !important;
 }
 .rail .dash-dropdown-value-item {
   font-size: 11px; padding: 0 2px; max-width: 100%;
@@ -148,7 +209,15 @@ body {
 }
 .switch-row input { accent-color: var(--accent); width: 15px; height: 15px; cursor: pointer; }
 
-.btn-wide { width: 100%; margin-top: 4px; }
+.btn {
+  font-family: inherit; font-size: 12.5px; font-weight: 600;
+  color: var(--accent); background: var(--surface-2);
+  border: 1px solid var(--border); border-radius: 8px;
+  padding: 9px 14px; cursor: pointer;
+}
+.btn:hover { border-color: var(--accent); background: var(--accent-soft); }
+.btn:active { transform: translateY(1px); }
+.btn-wide { width: 100%; margin-top: 10px; }
 
 .rail-help { margin-top: 14px; }
 .rail-help summary {
@@ -250,33 +319,55 @@ body.dark .dash-dropdown-option[aria-selected="true"] {
   background: var(--accent-soft) !important;
 }
 
-/* Dash 4 dropdown popup: rendered position:fixed in a portal, transparent by default */
-body.dark .dash-options-list,
-body.dark .dash-options-list-option,
-body.dark .dash-options-list-option-text,
-body.dark .dash-dropdown-search-container,
-body.dark .dash-dropdown-search {
-  background: var(--surface-2) !important;
-  color: var(--text) !important;
-  border-color: var(--border) !important;
-}
-body.dark .dash-options-list-option:hover,
-body.dark .dash-options-list-option[aria-selected="true"] {
-  background: var(--accent-soft) !important;
-}
-/* the fixed portal wrapper needs the surface colour, not transparency */
-body.dark .dash-dropdown-wrapper > div[style*="z-index"] { background: transparent !important; }
-body.dark div[role="listbox"] {
+/* Dash 4 dropdown popup (position:fixed portal).
+   Careful: every Checklist is ALSO role="listbox", so popup rules must be
+   scoped by the dash-dropdown ancestor, never by [role=listbox] alone. */
+body.dark .dash-dropdown [role="listbox"] {
   background: var(--surface-2) !important;
   color: var(--text) !important;
   border: 1px solid var(--border) !important;
   border-radius: 8px;
   box-shadow: 0 6px 20px rgba(0,0,0,0.55);
 }
+body.dark .dash-dropdown [role="listbox"] .dash-options-list-option,
+body.dark .dash-dropdown [role="listbox"] .dash-options-list-option-text,
+body.dark .dash-dropdown-search-container,
+body.dark .dash-dropdown-search {
+  background: var(--surface-2) !important;
+  color: var(--text) !important;
+}
+body.dark .dash-dropdown [role="listbox"] .dash-options-list-option:hover,
+body.dark .dash-dropdown [role="listbox"] .dash-options-list-option[aria-selected="true"] {
+  background: var(--accent-soft) !important;
+}
+/* dropdown popup body sits in a portal, outside .rail */
+.dash-dropdown [role="listbox"] .dash-options-list-option { border-width: 0 !important; }
 
-/* range slider */
-body.dark .rc-slider-rail { background: var(--border); }
-body.dark .rc-slider-mark-text { color: var(--text-muted); }
+/* Dash 4 range slider (dash-slider-* classes). The old rc-slider rules never
+   applied, which is why the year marks stayed near-black on the dark panel. */
+.dash-slider-root { padding-bottom: 4px; }
+.dash-slider-track { background: var(--border) !important; height: 5px !important; }
+.dash-slider-range { background: var(--accent) !important; height: 5px !important; }
+.dash-slider-thumb {
+  background: var(--surface) !important;
+  border: 2px solid var(--accent) !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.35) !important;
+  width: 15px !important; height: 15px !important;
+}
+.dash-slider-mark {
+  color: var(--text-muted) !important;
+  font-size: 10.5px !important;
+  margin-top: 8px !important;
+}
+.dash-slider-tooltip {
+  background: var(--surface-2) !important;
+  color: var(--text) !important;
+  border: 1px solid var(--accent-border) !important;
+  border-radius: 6px !important;
+  font-size: 11px !important;
+}
+/* spinner inputs Dash overlays on the slider are redundant here */
+.window-slider .dash-input-container { display: none !important; }
 
 /* collapsed / open <details> must not inherit a white background */
 details.more { background: transparent; }
