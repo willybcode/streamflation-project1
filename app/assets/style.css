@@ -147,27 +147,39 @@ body {
 }
 .rail .dash-dropdown:hover { border-color: var(--accent) !important; }
 /* the vertical scrollbar inside the multi-select pill area */
-.rail .dash-dropdown-value::-webkit-scrollbar { width: 8px; }
-.rail .dash-dropdown-value::-webkit-scrollbar-track { background: transparent; }
-.rail .dash-dropdown-value::-webkit-scrollbar-thumb {
-  background: var(--border-strong); border-radius: 4px;
-}
-.rail .dash-dropdown-value::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
-.rail .dash-dropdown-value { scrollbar-width: thin; scrollbar-color: var(--border-strong) transparent; }
-
-/* Dash 4 multi-select must wrap inside the rail instead of overflowing it */
+/* ---------------------------------------------------------------
+   Services picker
+   Dash renders the trigger as a CSS grid with hard-coded pixel
+   columns (value 44px, count 73px, clear 16px, arrow 15px), so the
+   selected-value pills were squeezed into a 44px scrolling column.
+   There are only 8 services, so show a single summary line instead of
+   listing every pill; the full searchable list is one click away.
+   --------------------------------------------------------------- */
 .rail .dash-dropdown,
-.rail .dash-dropdown-wrapper,
-.rail .dash-dropdown-grid-container { max-width: 100%; min-width: 0; }
-.rail .dash-dropdown-value {
-  display: flex; flex-wrap: wrap; gap: 3px;
-  max-height: 74px; overflow-y: auto; min-width: 0;
-  background: transparent !important; border: none !important;
+.rail .dash-dropdown-wrapper { max-width: 100%; min-width: 0; }
+
+.rail .dash-dropdown-grid-container {
+  display: flex !important;
+  align-items: center;
+  gap: 8px;
+  grid-template-columns: none !important;
+  width: 100%;
 }
-.rail .dash-dropdown-value-item {
-  font-size: 11px; padding: 0 2px; max-width: 100%;
-  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+/* pills duplicate the "N selected" count, and never fit in 210px */
+.rail .dash-dropdown-value { display: none !important; }
+.rail .dash-dropdown-value-count {
+  flex: 1 1 auto;
+  background: transparent !important;
+  color: var(--text) !important;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+.rail .dash-dropdown-clear { flex: 0 0 auto; color: var(--text-muted) !important; }
+.rail .dash-dropdown-grid-container > svg { flex: 0 0 auto; }
 
 /* quick-action chips */
 .quick { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 9px; }
@@ -319,29 +331,46 @@ body.dark .dash-dropdown-option[aria-selected="true"] {
   background: var(--accent-soft) !important;
 }
 
-/* Dash 4 dropdown popup (position:fixed portal).
-   Careful: every Checklist is ALSO role="listbox", so popup rules must be
-   scoped by the dash-dropdown ancestor, never by [role=listbox] alone. */
-body.dark .dash-dropdown [role="listbox"] {
-  background: var(--surface-2) !important;
-  color: var(--text) !important;
-  border: 1px solid var(--border) !important;
-  border-radius: 8px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.55);
+/* Dash 4 dropdown popup. It renders in a portal at the end of <body>, so it is
+   NOT a descendant of .dash-dropdown and cannot be reached that way. It is
+   told apart from a Checklist (also role=listbox) by the .dash-dropdown-content
+   wrapper that only the popup has. */
+body.dark .dash-dropdown-content,
+.dash-dropdown-content {
+  background: var(--surface) !important;
+  border: 1px solid var(--border-strong) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45) !important;
+  padding: 6px !important;
+  overflow: hidden;
 }
-body.dark .dash-dropdown [role="listbox"] .dash-options-list-option,
-body.dark .dash-dropdown [role="listbox"] .dash-options-list-option-text,
-body.dark .dash-dropdown-search-container,
-body.dark .dash-dropdown-search {
-  background: var(--surface-2) !important;
-  color: var(--text) !important;
+.dash-dropdown-content [role="listbox"] {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
 }
-body.dark .dash-dropdown [role="listbox"] .dash-options-list-option:hover,
-body.dark .dash-dropdown [role="listbox"] .dash-options-list-option[aria-selected="true"] {
+.dash-dropdown-content .dash-options-list-option,
+.dash-dropdown-content .dash-options-list-option-text {
+  background: transparent !important;
+  color: var(--text) !important;
+  border-width: 0 !important;
+  border-radius: 6px !important;
+  font-size: 12.5px !important;
+}
+.dash-dropdown-content .dash-options-list-option {
+  padding: 6px 9px !important;
+}
+.dash-dropdown-content .dash-options-list-option:hover,
+.dash-dropdown-content .dash-options-list-option[aria-selected="true"] {
   background: var(--accent-soft) !important;
 }
-/* dropdown popup body sits in a portal, outside .rail */
-.dash-dropdown [role="listbox"] .dash-options-list-option { border-width: 0 !important; }
+.dash-dropdown-search-container,
+.dash-dropdown-search {
+  background: var(--surface-2) !important;
+  color: var(--text) !important;
+  border-color: var(--border) !important;
+  border-radius: 6px !important;
+}
 
 /* Dash 4 range slider (dash-slider-* classes). The old rc-slider rules never
    applied, which is why the year marks stayed near-black on the dark panel. */
