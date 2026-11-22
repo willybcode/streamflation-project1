@@ -81,8 +81,14 @@ app.layout = html.Div(className="page", children=[
                     html.Label("Services", htmlFor="services"),
                     html.Span(id="services-count", className="field-count"),
                 ]),
-                dcc.Dropdown(id="services", options=ALL_SERVICES, value=ALL_SERVICES,
-                             multi=True, placeholder="All services"),
+                # A direct checklist, not a dropdown: there are only 8 services,
+                # so a popup just hid options behind a scroll and a click.
+                dcc.Checklist(
+                    id="services",
+                    options=[{"label": s, "value": s} for s in ALL_SERVICES],
+                    value=ALL_SERVICES,
+                    className="service-checks",
+                ),
                 html.Div(className="quick", children=[
                     html.Button("All", id="svc-all", n_clicks=0, className="chip-btn"),
                     html.Button("None", id="svc-none", n_clicks=0, className="chip-btn"),
