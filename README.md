@@ -43,7 +43,7 @@ service port to container port **8050**.
 |---|---|---|---|
 | Q1 | How much has each plan's price risen since launch? | Dumbbell (launch → latest per plan), ordered by growth | click a row to isolate the service |
 | Q2 | Do price hikes cluster in time ("streamflation")? | Event timeline (dot size = hike) + service × year heatmap | zoom dates, click a dot to isolate |
-| Q3 | How big is the ad-supported vs ad-free gap, and how has it changed? | Step lines of the gap over time + today's gap dumbbell | tier filter, window |
+| Q3 | How big is the ad-supported vs ad-free gap, and how has it changed? | Small multiples (one panel per service) + today's gap dumbbell | tier filter, window |
 | Q4 | Have streaming prices risen faster than inflation? | Year-over-year paired bars (streaming vs CPI) + every plan vs inflation | year selector, tier filter |
 | Q5 | Do services raise prices in small steps or big jumps? | Bubble scatter: hike size vs months since previous change | hover, tier filter |
 | + | *My subscriptions* calculator | Total monthly cost of a chosen bundle over time, with breakdown | tick services, pick tier mode |
@@ -106,8 +106,10 @@ Every check and finding is in [data/processed/validation_report.md](data/process
     exactly what "clustering" means*;
   - heatmaps for Q2b give the count-comparison view the timeline cannot;
   - bubble scatter encodes three variables (interval, size, direction) for Q5;
-  - indexed lines with a rebasing window make "faster than inflation" a
-    *question with a control* instead of a fixed claim;
+  - year-over-year paired bars for Q4, because each year stands alone and a
+    single 2010 price cut cannot compound into the 2026 answer;
+  - small multiples for Q3, because seven series on one pair of axes cannot be
+    traced when services share gap values and start in different years;
   - steps (`hv` lines) everywhere prices are constant between changes — a
     smooth line would imply continuous change;
   - year-over-year paired bars for Q4 rather than a cumulative index, because

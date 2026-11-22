@@ -132,21 +132,25 @@ app.layout = html.Div(className="page", children=[
                           "increases, shaded from pale to dark. Dark horizontal bands mark a service "
                           "that raises prices often; dark vertical bands mark a year when most of "
                           "the market moved at once.")),
-            card("Q3 · The price of going ad-free", "Step line chart",
+            card("Q3 · The price of going ad-free, service by service", "Small multiples",
                  "How much extra does it cost to remove ads, and is that premium growing?",
                  "fig-q3a",
-                 details=("For each service, the cheapest no-ads plan minus the cheapest with-ads "
-                          "plan, every month, so the line is the ad-free premium in dollars. Lines "
-                          "are stepped because a price only changes on a specific date; a smooth "
-                          "curve would imply gradual change that never happened. Six of seven "
-                          "services show a widening gap.")),
+                 details=("One panel per service, so the seven lines never overlap. Each panel plots "
+                          "the cheapest no-ads plan minus the cheapest with-ads plan, every month, "
+                          "with the latest value labelled in the corner. Panels share the same "
+                          "vertical scale, so heights are directly comparable: a taller panel means a "
+                          "bigger ad-free premium. Steps, not curves, because a price only changes on "
+                          "a specific date. Six of seven services end higher than they started."),
+                 span=2),
             card("Q3 · Today's ad-free premium", "Dumbbell chart",
                  "What does the ad-free upgrade cost right now, service by service?",
                  "fig-q3b",
                  details=("One row per service at the end of the selected window: the amber dot is "
                           "the cheapest with-ads plan, the blue dot the cheapest no-ads plan, and the "
-                          "line between them is the premium. This is the chart on the left collapsed "
-                          "to its latest value.")),
+                          "line between them is the premium, sorted largest at the top. This is the "
+                          "ad-free premium chart above collapsed to its latest value, but shown in "
+                          "absolute dollars so you can see what the upgrade actually costs."),
+                 span=2),
             card("Q4 · Faster than inflation, year by year?", "Paired bar chart",
                  "In which years did streaming prices outpace the general cost of living?",
                  "fig-q4a",
@@ -277,7 +281,7 @@ def update_all(services, tiers, window, advanced):
             fig_timeline(ev_w, DATA["service_colors"]),
             fig_heatmap(ev_w),
             fig_hike_scatter(ev_w),
-            fig_gap_lines(gap_w, DATA["service_colors"]),
+            fig_gap_lines(gap_w, DATA["service_colors"], cols=4),
             fig_gap_dumbbell(gap_w),
             fig_yoy_inflation(DATA["yoy"]),
             fig_growth_vs_inflation(summary, monthly),

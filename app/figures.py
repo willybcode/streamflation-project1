@@ -12,6 +12,7 @@ import numpy as np
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 
 ROOT = Path(__file__).resolve().parent.parent
 PROC = ROOT / "data" / "processed"
@@ -136,19 +137,80 @@ def fig_heatmap(events: pd.DataFrame) -> go.Figure:
 # ---------------------------------------------------------------------------
 # Q3a — cost of going ad-free over time
 # ---------------------------------------------------------------------------
-def fig_gap_lines(gap: pd.DataFrame, service_colors: dict[str, str]) -> go.Figure:
+def fig_gap_lines(gap: pd.DataFrame, service_colors: dict[str, str],
+                  cols: int = 4) -> go.Figure:
+    """Small multiples: one panel per service, so seven series never overlap.
+
+    A single frame with seven stepped lines drew the same gap values (5, 6, 7
+    dollars) on top of each other, and the panels start in different years, so
+    the lines were impossible to trace or compare. One row per service fixes
+    both: each panel answers "how did this service's ad premium move", and the
+    shared x and y scales keep the panels comparable.
+    """
     if gap.empty:
         return empty_fig()
-    fig = px.line(gap, x="month", y="gap_usd", color="service_name", line_shape="hv",
-                  color_discrete_map=service_colors,
-                  labels={"month": "", "gap_usd": "Extra USD per month for no-ads",
-                          "service_name": ""},
-                  custom_data=["with ads", "no ads", "gap_pct"])
-    for tr in fig.data:
-        tr.hovertemplate = ("<b>%{fullData.name}</b><br>%{x|%b %Y}: +%{y:.2f} USD to go ad-free<br>"
-                            "with ads $%{customdata[0]:.2f} → no ads $%{customdata[1]:.2f} "
-                            "(+%{customdata[2]:.1f}%)<extra></extra>")
-    return _layout(fig, height=CHART_H, showlegend=True)
+
+    df = gap.copy()
+    services = sorted(df["service_name"].unique())
+    n = len(services)
+    cols = max(1, min(cols, n))
+    rows = (n + cols - 1) // cols
+
+    # On a single row, shared_xaxes would hide every year label, so each panel
+    # keeps its own x axis; with several rows only the bottom row needs them.
+    fig = make_subplots(
+        rows=rows, cols=cols, shared_xaxes=(rows > 1), shared_yaxes=True,
+        subplot_titles=services, vertical_spacing=0.22, horizontal_spacing=0.06,
+    )
+
+    for i, svc in enumerate(services):
+        r, c = i // cols + 1, i % cols + 1
+        sub = df[df["service_name"] == svc].sort_values("month")
+        color = service_colors.get(svc, "#2A6F97")
+        fig.add_trace(go.Scatter(
+            x=sub["month"], y=sub["gap_usd"], mode="lines",
+            name=svc, showlegend=False,
+            line=dict(color=color, width=2.5, shape="hv"),
+            fill="tozeroy", fillcolor=_rgba(color, 0.13),
+            customdata=np.stack([sub["with ads"], sub["no ads"], sub["gap_pct"]], axis=-1),
+            hovertemplate=("<b>" + svc + "</b><br>%{x|%b %Y}<br>"
+                           "Ad-free costs +$%{y:.2f} more<br>"
+                           "with ads $%{customdata[0]:.2f} → no ads $%{customdata[1]:.2f} "
+                           "(+%{customdata[2]:.0f}%)<extra></extra>"),
+        ), row=r, col=c)
+
+        # start and end labels, so each panel reads on its own
+        first, last = sub.iloc[0], sub.iloc[-1]
+        fig.add_annotation(x=last["month"], y=last["gap_usd"],
+                           text=f"<b>${last['gap_usd']:.2f}</b>", showarrow=False,
+                           xanchor="right", yanchor="bottom",
+                           font=dict(size=10, color=color), row=r, col=c)
+
+    # With shared_yaxes the title lands on the bottom-left panel only, which reads
+    # as if it labels one chart. Put it on the global y axis instead.
+    fig.update_yaxes(title_text="Extra USD/month for no-ads",
+                     title_font=dict(size=11), row=rows, col=1)
+    fig.update_layout(yaxis=dict(title_text="Extra USD/month for no-ads",
+                                 title_font=dict(size=11)))
+    # make_subplots forces showticklabels=False on the linked axes; re-enable
+    # them explicitly or the panels have no dates at all.
+    if rows == 1:
+        fig.update_xaxes(showticklabels=True, tickformat="%Y", nticks=4,
+                         tickfont=dict(size=9))
+    else:
+        fig.update_xaxes(showticklabels=False)
+        fig.update_xaxes(showticklabels=True, tickformat="%Y", nticks=4,
+                         tickfont=dict(size=9), row=rows)
+    fig.update_yaxes(tickfont=dict(size=9))
+    fig.update_annotations(font_size=11)
+    return _layout(fig, height=CHART_H + (60 if rows > 1 else 0), showlegend=False,
+                   margin=dict(l=56, r=20, t=40, b=40))
+
+
+def _rgba(hex_color: str, alpha: float) -> str:
+    h = hex_color.lstrip("#")
+    r, g, b = (int(h[i:i + 2], 16) for i in (0, 2, 4))
+    return f"rgba({r},{g},{b},{alpha})"
 
 
 # ---------------------------------------------------------------------------
