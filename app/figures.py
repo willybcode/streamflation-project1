@@ -361,15 +361,11 @@ def fig_gap_lines(gap: pd.DataFrame, service_colors: dict[str, str],
                      title_font=dict(size=11), row=rows, col=1)
     fig.update_layout(yaxis=dict(title_text="Extra USD/month for no-ads",
                                  title_font=dict(size=11)))
-    # make_subplots forces showticklabels=False on the linked axes; re-enable
-    # them explicitly or the panels have no dates at all.
-    if rows == 1:
-        fig.update_xaxes(showticklabels=True, tickformat="%Y", nticks=4,
-                         tickfont=dict(size=9))
-    else:
-        fig.update_xaxes(showticklabels=False)
-        fig.update_xaxes(showticklabels=True, tickformat="%Y", nticks=4,
-                         tickfont=dict(size=9), row=rows)
+    # Every panel is a time series with its own start year, so every panel needs
+    # year labels. make_subplots + shared_xaxes hides them on non-bottom rows;
+    # re-enable them explicitly for all rows, not just the bottom one.
+    fig.update_xaxes(showticklabels=True, tickformat="%Y", nticks=4,
+                     tickfont=dict(size=9))
     fig.update_yaxes(tickfont=dict(size=9))
     fig.update_annotations(font_size=11)
     return _layout(fig, height=CHART_H + (60 if rows > 1 else 0), showlegend=False,
