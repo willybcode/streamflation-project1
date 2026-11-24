@@ -234,11 +234,13 @@ app.layout = html.Div(className="page", children=[
                className="q"),
         html.Div(className="calc-controls", children=[
             dcc.Checklist(id="calc-services",
-                          options=[{"label": f" {s}", "value": s} for s in ALL_SERVICES],
-                          value=ALL_SERVICES[:4], inline=True, className="tier-checks"),
+                          options=[{"label": s, "value": s} for s in ALL_SERVICES],
+                          value=ALL_SERVICES[:4], inline=True,
+                          className="calc-checks"),
             dcc.RadioItems(id="calc-mode",
                            options=["Cheapest ad-free", "Cheapest with ads", "Cheapest plan overall"],
-                           value="Cheapest ad-free", inline=True, className="tier-checks"),
+                           value="Cheapest ad-free", inline=True,
+                           className="calc-radios"),
         ]),
         html.Div(id="calc-kpis", className="kpis", children=[
             html.Div([html.Div(id="ckpi1", className="kpi-v", children="–"),

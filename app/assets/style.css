@@ -295,7 +295,40 @@ body {
 
 /* calculator */
 .calc { margin-top: 18px; }
-.calc-controls { display: flex; gap: 30px; flex-wrap: wrap; margin-bottom: 8px; }
+.calc-controls {
+  display: flex; gap: 30px; flex-wrap: wrap; margin-bottom: 10px;
+}
+/* The calculator sits outside .rail, so it needs its own themed control CSS.
+   Without this, Dash's defaults paint near-black labels on the dark card. */
+.calc-checks, .calc-radios {
+  display: flex; flex-wrap: wrap; align-items: center;
+  gap: 6px; background: transparent !important;
+  border-width: 0 !important; padding: 0 !important;
+}
+.calc-checks label, .calc-radios label {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin: 0; padding: 4px 9px;
+  font-size: 12px; font-weight: 500;
+  color: var(--text) !important;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 999px; cursor: pointer; user-select: none;
+  transition: border-color 0.15s, background 0.15s;
+}
+.calc-checks label:hover, .calc-radios label:hover { border-color: var(--accent); }
+.calc-checks input, .calc-radios input {
+  accent-color: var(--accent);
+  width: 14px; height: 14px; margin: 0; cursor: pointer;
+}
+.calc-checks label:has(input:checked),
+.calc-radios label:has(input:checked) {
+  border-color: var(--accent-border);
+  background: var(--accent-soft);
+  color: var(--text) !important;
+}
+/* hide the option-text span wrappers only if they add no box */
+.calc-checks .dash-options-list-option-text,
+.calc-radios .dash-options-list-option-text { display: inline; }
 
 footer {
   margin-top: 26px; padding-top: 12px;
