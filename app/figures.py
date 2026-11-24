@@ -175,8 +175,9 @@ def apply_theme(fig: go.Figure, dark: bool = False) -> go.Figure:
             if ml is not None and isinstance(getattr(ml, "color", None), str):
                 tr.marker.line.color = conv(ml.color)
 
-    # Data labels: only set a single colour when the builder did not supply
-    # per-cell colours (the heatmap sets its own zero-vs-positive colours).
+    # Data labels: only set a colour when the builder did not supply one.
+    # Text-only traces (the heatmap's zero/positive label overlays) set their
+    # own colours and must not be repainted.
     for tr in fig.data:
         tf = getattr(tr, "textfont", None)
         if tf is not None and getattr(tf, "color", None) is None:
@@ -296,12 +297,9 @@ def fig_heatmap(events: pd.DataFrame, dark: bool = False) -> go.Figure:
     hikes["year"] = hikes["effective_date"].dt.year
     matrix = pd.crosstab(hikes["service_name"], hikes["year"])
     matrix = matrix.reindex(columns=range(2010, 2027), fill_value=0)
-    matrix.index.name = None  # avoid a stray "service_name" axis label
+    matrix.index.name = None
 
     t = THEME["dark" if dark else "light"]
-    # px.imshow paints zero cells (and their text) white by default, which is
-    # illegible on the dark card. Use a dark-sequence ramp in dark mode and set
-    # the text colour per theme explicitly.
     scale = (
         [[0, "#2a3038"], [0.01, "#4a2530"], [0.35, "#8c2d3a"],
          [0.7, "#c1121f"], [1, "#ff8787"]] if dark else
@@ -309,26 +307,40 @@ def fig_heatmap(events: pd.DataFrame, dark: bool = False) -> go.Figure:
          [0.7, "#c1121f"], [1, "#7b0d16"]]
     )
 
-    # Plotly cannot colour heatmap text per cell, so leave zeros blank: colour
-    # and hover already say "no change", and the pale/light zero cell plus pale
-    # text was unreadable in dark mode. Positive cells get white text.
-    cell_text = [[str(v) if v > 0 else "" for v in row] for row in matrix.values]
-
     fig = go.Figure(go.Heatmap(
         z=matrix.values,
         x=matrix.columns.astype(str),
         y=matrix.index.tolist(),
-        text=cell_text,
-        texttemplate="%{text}",
-        textfont=dict(size=11, color="#ffffff" if dark else "#1a1a1a"),
-        colorscale=scale,
-        zmin=0, zmax=3,
-        showscale=True,
-        colorbar=dict(thickness=12,
-                      tickfont=dict(color=t["text_dim"]),
+        colorscale=scale, zmin=0, zmax=3, showscale=True,
+        colorbar=dict(thickness=12, tickfont=dict(color=t["text_dim"]),
                       title=dict(font=dict(color=t["text_dim"]))),
         hovertemplate="%{y}<br>%{x}: %{z} price increase(s)<extra></extra>",
     ))
+
+    # Plotly cannot set text colour per cell on a heatmap. Overlay two scatter
+    # traces instead: one for the zeros (muted, legible on the empty cell) and
+    # one for positive counts (high contrast on the red ramp). That keeps the
+    # zeros visible without the white-on-white problem of the original.
+    services = list(matrix.index)
+    years = [str(y) for y in matrix.columns]
+    zero_pts, hot_pts = [], []
+    for i, svc in enumerate(services):
+        for j, yr in enumerate(years):
+            v = int(matrix.iloc[i, j])
+            (zero_pts if v == 0 else hot_pts).append((yr, svc, str(v)))
+
+    hot_col = "#ffffff" if dark else "#1a1a1a"
+    # muted colour tuned per theme so the "0" clears 4.5:1 on the empty cell
+    zero_col = t["muted"] if dark else "#616a75"
+    for pts, colour in ((zero_pts, zero_col), (hot_pts, hot_col)):
+        if not pts:
+            continue
+        fig.add_trace(go.Scatter(
+            x=[p[0] for p in pts], y=[p[1] for p in pts],
+            text=[p[2] for p in pts], mode="text", hoverinfo="skip",
+            textfont=dict(size=10, color=colour),
+        ))
+
     return _layout(fig, height=CHART_H)
 
 
