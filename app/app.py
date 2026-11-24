@@ -328,7 +328,7 @@ def update_all(services, tiers, window, advanced, theme):
     figs = [
         fig_dumbbell(summary),
         fig_timeline(ev_w, DATA["service_colors"], dark=dark),
-        fig_heatmap(ev_w),
+        fig_heatmap(ev_w, dark=dark),
         fig_hike_scatter(ev_w, dark=dark),
         fig_gap_lines(gap_w, DATA["service_colors"], cols=4, dark=dark),
         fig_gap_dumbbell(gap_w, dark=dark),

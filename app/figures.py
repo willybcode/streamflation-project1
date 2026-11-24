@@ -175,9 +175,11 @@ def apply_theme(fig: go.Figure, dark: bool = False) -> go.Figure:
             if ml is not None and isinstance(getattr(ml, "color", None), str):
                 tr.marker.line.color = conv(ml.color)
 
-    # data labels written by imshow/text traces, and subplot titles
+    # Data labels: only set a single colour when the builder did not supply
+    # per-cell colours (the heatmap sets its own zero-vs-positive colours).
     for tr in fig.data:
-        if getattr(tr, "textfont", None) is not None:
+        tf = getattr(tr, "textfont", None)
+        if tf is not None and getattr(tf, "color", None) is None:
             tr.textfont = dict(color=t["text"])
     if fig.layout.annotations:
         fig.update_annotations(font_color=t["text"])
@@ -287,7 +289,7 @@ def fig_timeline(events: pd.DataFrame, service_colors: dict[str, str],
 # ---------------------------------------------------------------------------
 # Q2b — service x year heatmap
 # ---------------------------------------------------------------------------
-def fig_heatmap(events: pd.DataFrame) -> go.Figure:
+def fig_heatmap(events: pd.DataFrame, dark: bool = False) -> go.Figure:
     if events.empty:
         return empty_fig()
     hikes = events[events["change_usd"] > 0].copy()
@@ -295,10 +297,38 @@ def fig_heatmap(events: pd.DataFrame) -> go.Figure:
     matrix = pd.crosstab(hikes["service_name"], hikes["year"])
     matrix = matrix.reindex(columns=range(2010, 2027), fill_value=0)
     matrix.index.name = None  # avoid a stray "service_name" axis label
-    fig = px.imshow(matrix, text_auto=True, color_continuous_scale="Reds", aspect="auto",
-                    labels=dict(x="Year", y="", color=""))
-    fig.update_traces(hovertemplate="%{y}<br>%{x}: %{z} price increase(s)<extra></extra>")
-    fig.update_layout(coloraxis_colorbar=dict(thickness=12))
+
+    t = THEME["dark" if dark else "light"]
+    # px.imshow paints zero cells (and their text) white by default, which is
+    # illegible on the dark card. Use a dark-sequence ramp in dark mode and set
+    # the text colour per theme explicitly.
+    scale = (
+        [[0, "#2a3038"], [0.01, "#4a2530"], [0.35, "#8c2d3a"],
+         [0.7, "#c1121f"], [1, "#ff8787"]] if dark else
+        [[0, "#f1f3f5"], [0.01, "#fadbd8"], [0.35, "#e6a29c"],
+         [0.7, "#c1121f"], [1, "#7b0d16"]]
+    )
+
+    # Plotly cannot colour heatmap text per cell, so leave zeros blank: colour
+    # and hover already say "no change", and the pale/light zero cell plus pale
+    # text was unreadable in dark mode. Positive cells get white text.
+    cell_text = [[str(v) if v > 0 else "" for v in row] for row in matrix.values]
+
+    fig = go.Figure(go.Heatmap(
+        z=matrix.values,
+        x=matrix.columns.astype(str),
+        y=matrix.index.tolist(),
+        text=cell_text,
+        texttemplate="%{text}",
+        textfont=dict(size=11, color="#ffffff" if dark else "#1a1a1a"),
+        colorscale=scale,
+        zmin=0, zmax=3,
+        showscale=True,
+        colorbar=dict(thickness=12,
+                      tickfont=dict(color=t["text_dim"]),
+                      title=dict(font=dict(color=t["text_dim"]))),
+        hovertemplate="%{y}<br>%{x}: %{z} price increase(s)<extra></extra>",
+    ))
     return _layout(fig, height=CHART_H)
 
 
